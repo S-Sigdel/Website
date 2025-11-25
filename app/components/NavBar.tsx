@@ -8,7 +8,6 @@ export default function NavBar() {
   const navItems = [
     { name: '~/intro', href: '#intro' },
     { name: '~/projects', href: '#projects' },
-    { name: '~/honors', href: '#honors' },
     { name: '~/workflow', href: '#workflow' },
     { name: '~/machine', href: '#machine' },
   ];

@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 export default function Intro() {
   const [copied, setCopied] = useState(false);
-  const command = "wget https://sigdel.tech/resume.pdf";
+  const command = "wget https://sakshyamsigdel.com.np/Resume.pdf";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(command);
@@ -52,7 +52,7 @@ export default function Intro() {
           {/* Social Links - Moved to left side */}
           <div className="flex gap-4 items-center pt-2">
             <a 
-              href="https://github.com/yourusername" 
+              href="https://github.com/s-sigdel" 
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-2 px-4 py-2 bg-surface0 border border-surface1 rounded-lg hover:border-green/50 transition-all"
@@ -64,7 +64,7 @@ export default function Intro() {
             </a>
             
             <a 
-              href="https://linkedin.com/in/yourusername" 
+              href="https://www.linkedin.com/in/sakshyam-sigdel-74b8a6232/" 
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-2 px-4 py-2 bg-surface0 border border-surface1 rounded-lg hover:border-green/50 transition-all"
@@ -130,7 +130,7 @@ export default function Intro() {
             {/* Hex Dump Visual */}
             <div className="bg-base border border-surface0 p-4 rounded font-mono text-xs overflow-hidden relative opacity-80 hover:opacity-100 transition-opacity">
                <div className="absolute top-0 right-0 bg-surface0 text-overlay1 px-2 py-1 text-[10px] uppercase">
-                 resume.pdf - hexview
+                 Resume.pdf - hexview
                </div>
                {hexData.map((row) => (
                  <div key={row.offset} className="flex gap-4 hover:bg-surface0/30">
@@ -139,14 +139,14 @@ export default function Intro() {
                    <span className="text-green border-l border-surface1 pl-4 select-none opacity-50">{row.ascii}</span>
                  </div>
                ))}
-               <div className="text-overlay1 mt-1 select-none">....... (45KB total)</div>
+               <div className="text-overlay1 mt-1 select-none">....... (110KB total)</div>
             </div>
 
             {/* Download Button */}
             <div className="flex justify-start">
               <a 
-                href="https://sigdel.tech/resume.pdf" 
-                download="resume.pdf"
+                href="/Resume.pdf" 
+                download="Resume.pdf"
                 className="group relative px-6 py-3 bg-surface0 overflow-hidden rounded-sm border border-surface1 hover:border-green transition-all"
               >
                 <div className="absolute inset-0 w-0 bg-green/10 transition-all duration-[250ms] ease-out group-hover:w-full" />
