@@ -116,7 +116,7 @@ export default function Terminal() {
     const newHistory = [...state.history, `sigdel@portfolio: ~/${state.cwd.slice(1).join('/')}$ ${cmd}`];
     let newFs = { ...state.fs };
     let newCwd = [...state.cwd];
-    let newMode = state.mode;
+    let newMode: 'shell' | 'llm-chat' = state.mode;
 
     switch (command) {
       case 'clear':

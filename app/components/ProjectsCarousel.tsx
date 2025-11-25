@@ -102,7 +102,7 @@ export default function ProjectsCarousel() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [showDevpostModal, setShowDevpostModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [cardImageIndex, setCardImageIndex] = useState<{ [key: number]: number }>({});
+  const [cardImageIndex, setCardImageIndex] = useState<{ [key: string | number]: number }>({});
   const [imageFade, setImageFade] = useState<{ [key: string]: boolean }>({});
 
   // Initialize fade states
