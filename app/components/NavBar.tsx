@@ -14,7 +14,7 @@ export default function NavBar() {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-surface0 bg-base/90 backdrop-blur-sm text-green font-mono text-sm">
-      <div className="flex items-center justify-between px-4 py-2">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-8 lg:px-12 py-2">
         {/* Left: Username */}
         <div className="flex items-center gap-2 flex-shrink-0">
           <span className="text-subtext0 text-xs sm:text-sm">sigdel@portfolio:~$</span>
