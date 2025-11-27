@@ -94,6 +94,17 @@ html {
   background: var(--overlay0);
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 /* Base Styles */
 body {
   background: var(--background);
@@ -156,5 +167,12 @@ section:nth-child(6) { animation-delay: 0.6s; }
   }
   50% {
     box-shadow: 0 0 20px rgba(251, 179, 135, 0.5), 0 0 30px rgba(251, 179, 135, 0.3);
+  }
+}
+
+/* Desktop Scaling: 125% default zoom */
+@media (min-width: 1024px) {
+  html {
+    font-size: 125%; /* 20px base size, effectively 1.25x zoom */
   }
 }

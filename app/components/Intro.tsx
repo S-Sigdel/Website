@@ -1,8 +1,9 @@
 'use client';
 
 import SectionContainer from './SectionContainer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import MiniGame from './MiniGame';
 
 export default function Intro() {
   const [copied, setCopied] = useState(false);
@@ -14,21 +15,29 @@ export default function Intro() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Hex dump effect data
-  const hexData = [
-    { offset: "00000000", hex: "25 50 44 46 2d 31 2e 37  0a 25 d0 d4 c5 d8 0a 34", ascii: "%PDF-1.7..%....4" },
-    { offset: "00000010", hex: "30 20 30 20 6f 62 6a 0a  3c 3c 2f 4c 65 6e 67 74", ascii: "0 0 obj.<<.Lengt" },
-    { offset: "00000020", hex: "68 20 32 33 34 20 2f 46  69 6c 74 65 72 20 2f 46", ascii: "h 234 /Filter /F" },
-    { offset: "00000030", hex: "6c 61 74 65 44 65 63 6f  64 65 3e 3e 0a 73 74 72", ascii: "lateDecode>>.str" },
-    { offset: "00000040", hex: "65 61 6d 0a 78 9c 8d 91  4d 6e 83 30 10 85 f7 7e", ascii: "eam.x...Mn.0...~" },
-  ];
+  const HeroImage = ({ className }: { className?: string }) => (
+    <div className={`relative group ${className}`}>
+      <div className="relative w-3/4 mx-auto aspect-square rounded-lg overflow-hidden border border-surface0 bg-surface0/50">
+        <Image
+          src="/hero.jpg"
+          alt="Sakshyam Sigdel"
+          fill
+          className="object-contain group-hover:scale-105 transition-transform duration-500"
+          priority
+        />
+        <div className="absolute bottom-2 left-2 font-mono text-xs text-text bg-surface0/90 px-2 py-1 rounded border border-surface1 backdrop-blur-sm">
+          <span className="text-green">$</span> whoami
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <SectionContainer id="intro">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
         {/* Left: Intro Content */}
         <div className="font-mono space-y-6">
-          <div className="text-overlay0">
+          <div className="text-overlay0 h-24">
             <p>/**</p>
             <p> * @author Sakshyam Sigdel</p>
             <p> * @description Low-level enthusiast, hardware tinkerer.</p>
@@ -49,7 +58,10 @@ export default function Intro() {
             </p>
           </div>
 
-          {/* Social Links - Moved to left side */}
+          {/* Mobile Hero Image (Visible only on small screens) */}
+          <HeroImage className="lg:hidden" />
+
+          {/* Social Links */}
           <div className="flex gap-4 items-center pt-2">
             <a 
               href="https://github.com/s-sigdel" 
@@ -70,38 +82,28 @@ export default function Intro() {
               className="group flex items-center gap-2 px-4 py-2 bg-surface0 border border-surface1 rounded-lg hover:border-green/50 transition-all"
             >
               <svg className="w-5 h-5 text-text group-hover:text-green transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.063 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
               </svg>
               <span className="text-text text-sm group-hover:text-green transition-colors">LinkedIn</span>
             </a>
           </div>
+
+          {/* Mini Game */}
+          <MiniGame />
         </div>
 
         {/* Right: Hero Image and Resume */}
-        <div className="font-mono space-y-6">
-          {/* Hero Image - Smaller size */}
-          <div className="relative group">
-            <div className="relative w-3/4 mx-auto aspect-square rounded-lg overflow-hidden border border-surface0 bg-surface0/50">
-              <Image
-                src="/hero.jpg"
-                alt="Sakshyam Sigdel"
-                fill
-                className="object-contain group-hover:scale-105 transition-transform duration-500"
-                priority
-              />
-              <div className="absolute bottom-2 left-2 font-mono text-xs text-text bg-surface0/90 px-2 py-1 rounded border border-surface1 backdrop-blur-sm">
-                <span className="text-green">$</span> whoami
-              </div>
-            </div>
-          </div>
+        <div className="font-mono space-y-6 lg:pt-24">
+          {/* Desktop Hero Image (Hidden on small screens) */}
+          <HeroImage className="hidden lg:block" />
 
           {/* Resume Section */}
-          <div className="space-y-4">
-            <div className="text-overlay0 text-sm">
+          <div className="space-y-3">
+            <div className="text-overlay0 text-sm flex justify-between items-end">
               <p>// Resume Download</p>
             </div>
 
-            {/* Copy Command Block */}
+            {/* Command Box */}
             <div className="relative group">
               <div className="flex items-center justify-between bg-surface0 border border-surface1 rounded-lg p-4 font-mono text-sm hover:border-green/50 transition-colors shadow-lg">
                 <div className="flex items-center gap-3 overflow-x-auto">
@@ -127,35 +129,18 @@ export default function Intro() {
               </div>
             </div>
 
-            {/* Hex Dump Visual */}
-            <div className="bg-base border border-surface0 p-4 rounded font-mono text-xs overflow-hidden relative opacity-80 hover:opacity-100 transition-opacity">
-               <div className="absolute top-0 right-0 bg-surface0 text-overlay1 px-2 py-1 text-[10px] uppercase">
-                 Resume.pdf - hexview
-               </div>
-               {hexData.map((row) => (
-                 <div key={row.offset} className="flex gap-4 hover:bg-surface0/30">
-                   <span className="text-overlay1 select-none">{row.offset}</span>
-                   <span className="text-mauve">{row.hex}</span>
-                   <span className="text-green border-l border-surface1 pl-4 select-none opacity-50">{row.ascii}</span>
-                 </div>
-               ))}
-               <div className="text-overlay1 mt-1 select-none">....... (110KB total)</div>
-            </div>
-
-            {/* Download Button */}
-            <div className="flex justify-start">
-              <a 
-                href="/Resume.pdf" 
-                download="Resume.pdf"
-                className="group relative px-6 py-3 bg-surface0 overflow-hidden rounded-sm border border-surface1 hover:border-green transition-all"
-              >
-                <div className="absolute inset-0 w-0 bg-green/10 transition-all duration-[250ms] ease-out group-hover:w-full" />
-                <span className="relative text-text font-mono font-bold flex items-center gap-2">
-                   <span className="text-green group-hover:text-text transition-colors">[</span>
-                   download resume
-                   <span className="text-green group-hover:text-text transition-colors">]</span>
-                </span>
-              </a>
+            {/* Small Tip-style Download Button */}
+            <div className="flex justify-end">
+               <a 
+                 href="/Resume.pdf" 
+                 download="Resume.pdf"
+                 className="inline-flex items-center gap-2 px-3 py-1.5 bg-surface0 border border-surface1 rounded-full text-xs text-subtext0 hover:text-text hover:border-green hover:bg-green/10 transition-all"
+               >
+                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                 </svg>
+                 <span>Download PDF</span>
+               </a>
             </div>
           </div>
         </div>

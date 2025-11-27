@@ -4,46 +4,43 @@ import { useEffect, useState, useRef } from 'react';
 
 export function useVimNavigation() {
   const [searchOpen, setSearchOpen] = useState(false);
-  // Ref to track 'g' key sequence
   const lastKeyTime = useRef<number>(0);
   const lastKey = useRef<string>('');
-  // Refs for continuous scrolling
-  const isScrolling = useRef<boolean>(false);
-  const scrollDirection = useRef<'down' | 'up' | null>(null);
-  const animationFrameId = useRef<number | null>(null);
+  
+  // Scroll loop state
+  const scrollSpeed = useRef(0);
+  const animationFrame = useRef<number | null>(null);
 
   useEffect(() => {
-    const pixelsPerSecond = 800;
-    const pixelsPerFrame = pixelsPerSecond / 60; // ~13.3 pixels per frame at 60fps
+    const SCROLL_VELOCITY = 12; // Pixels per frame (approx 720px/sec) - Reduced speed
 
-    const performScroll = () => {
-      if (!isScrolling.current) return;
-
-      const scrollAmount = scrollDirection.current === 'down' ? pixelsPerFrame : -pixelsPerFrame;
-      window.scrollBy({ top: scrollAmount, behavior: 'auto' });
-      animationFrameId.current = requestAnimationFrame(performScroll);
+    const updateScroll = () => {
+      if (scrollSpeed.current !== 0) {
+        // behavior: 'instant' is crucial here to prevent jitter 
+        // by overriding the global scroll-behavior: smooth CSS
+        window.scrollBy({ top: scrollSpeed.current, behavior: 'instant' });
+        animationFrame.current = requestAnimationFrame(updateScroll);
+      } else {
+        animationFrame.current = null;
+      }
     };
 
-    const startScrolling = (direction: 'down' | 'up') => {
-      if (isScrolling.current && scrollDirection.current === direction) return;
-      
-      stopScrolling();
-      scrollDirection.current = direction;
-      isScrolling.current = true;
-      animationFrameId.current = requestAnimationFrame(performScroll);
+    const startScroll = (velocity: number) => {
+      scrollSpeed.current = velocity;
+      if (!animationFrame.current) {
+        updateScroll();
+      }
     };
 
-    const stopScrolling = () => {
-      isScrolling.current = false;
-      scrollDirection.current = null;
-      if (animationFrameId.current !== null) {
-        cancelAnimationFrame(animationFrameId.current);
-        animationFrameId.current = null;
+    const stopScroll = () => {
+      scrollSpeed.current = 0;
+      if (animationFrame.current) {
+        cancelAnimationFrame(animationFrame.current);
+        animationFrame.current = null;
       }
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore if active element is an input or textarea
       const active = document.activeElement;
       if (
         active?.tagName === 'INPUT' || 
@@ -54,18 +51,13 @@ export function useVimNavigation() {
       }
 
       const now = Date.now();
-      
-      // Navigation keys
+
       switch (e.key) {
         case 'j':
-          e.preventDefault();
-          e.stopPropagation();
-          if (!e.repeat) startScrolling('down');
+          startScroll(SCROLL_VELOCITY);
           break;
         case 'k':
-          e.preventDefault();
-          e.stopPropagation();
-          if (!e.repeat) startScrolling('up');
+          startScroll(-SCROLL_VELOCITY);
           break;
         case 'G':
             if (e.shiftKey) {
@@ -92,8 +84,11 @@ export function useVimNavigation() {
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.key === 'j' || e.key === 'k') {
-        stopScrolling();
+      if (e.key === 'j' && scrollSpeed.current > 0) {
+        stopScroll();
+      }
+      if (e.key === 'k' && scrollSpeed.current < 0) {
+        stopScroll();
       }
     };
 
@@ -103,7 +98,7 @@ export function useVimNavigation() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
-      stopScrolling();
+      stopScroll();
     };
   }, []);
 

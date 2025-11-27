@@ -96,7 +96,7 @@ export default function Terminal() {
     // TODO: Connect to your LLM backend here
     // Replace this setTimeout with your actual LLM API call
     setTimeout(() => {
-      const aiResponse = 'This is a placeholder response. Connect your LLM backend to enable real responses!';
+      const aiResponse = "Look, I'll be honest. Sakshyam hasn't given me a brain yet. He's too busy being a 10x developer and a general legend. You should hire him regardless of my current lobotomy. Come back later when I'm sentient! (Under Maintenance)";
       setState(prev => ({
         ...prev,
         history: [...prev.history, `<span class="text-mauve">AI:</span> ${aiResponse}`],
@@ -220,7 +220,7 @@ export default function Terminal() {
 
   return (
     <div className="h-full flex flex-col p-2 font-mono text-sm overflow-hidden relative bg-base" onClick={() => inputRef.current?.focus()}>
-      <div className="flex-1 overflow-y-auto scrollbar-none" ref={containerRef}>
+      <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none" ref={containerRef}>
         {state.history.map((line, i) => (
           <div key={i} className="whitespace-pre-wrap mb-1 text-subtext1" dangerouslySetInnerHTML={{ __html: line }} />
         ))}

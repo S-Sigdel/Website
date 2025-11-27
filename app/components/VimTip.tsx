@@ -5,11 +5,6 @@ import { useState, useEffect } from 'react';
 export default function VimTip() {
   const [isVisible, setIsVisible] = useState(true);
 
-  useEffect(() => {
-    // Show notification on every page load
-    setIsVisible(true);
-  }, []);
-
   const handleDismiss = () => {
     setIsVisible(false);
   };

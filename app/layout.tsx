@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { StatusProvider } from "./context/StatusContext";
 import SearchOverlay from "./components/SearchOverlay";
+import Background from "./components/Background";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: "~/portfolio",
   description: "Low-level enthusiast portfolio",
   icons: {
-    icon: '/favicon.svg',
+    icon: '/favicon.ico',
   },
 };
 
@@ -33,7 +34,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-base text-text`}
       >
         <StatusProvider>
-          {children}
+          <Background />
+          <div className="relative z-10">
+            {children}
+          </div>
           <SearchOverlay />
         </StatusProvider>
       </body>

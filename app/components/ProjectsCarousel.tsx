@@ -33,7 +33,7 @@ const PROJECTS: Project[] = [
       languages: ["Arduino", "C++", "Circuitry"],
       color: "text-blue",
       link: "https://github.com/S-Sigdel/SenseNav",
-      images: ["/senseNav.jpeg"],
+      images: ["/senseNav.jpeg", "/sensenavmidas.jpeg"],
       location: "MIT, Cambridge"
     },
     {
@@ -194,6 +194,28 @@ export default function ProjectsCarousel() {
   const closeDevpostModal = useCallback(() => {
     setShowDevpostModal(false);
   }, []);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (showDevpostModal) {
+      // Save current scroll position
+      const scrollY = window.scrollY;
+      // Prevent body scroll
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+      
+      return () => {
+        // Restore body scroll
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [showDevpostModal]);
 
   const nextImage = useCallback(() => {
     if (selectedProject) {
@@ -490,8 +512,16 @@ export default function ProjectsCarousel() {
       {/* Devpost Projects Modal */}
       {showDevpostModal && (
         <div
-          className="fixed inset-0 z-50 bg-base/95 backdrop-blur-sm overflow-y-auto"
+          className="fixed inset-0 z-50 bg-base/95 backdrop-blur-sm overflow-y-auto overscroll-contain"
           onClick={closeDevpostModal}
+          onTouchMove={(e) => {
+            // Prevent background scroll on mobile
+            const target = e.target as HTMLElement;
+            const modalContent = target.closest('[data-modal-content]');
+            if (!modalContent) {
+              e.preventDefault();
+            }
+          }}
         >
           {/* Fixed Close Button */}
           <button
@@ -505,8 +535,13 @@ export default function ProjectsCarousel() {
           </button>
 
           <div
+            data-modal-content
             className="relative max-w-6xl w-full mx-auto px-4 py-8 min-h-screen"
             onClick={(e) => e.stopPropagation()}
+            onTouchMove={(e) => {
+              // Allow scrolling within modal content
+              e.stopPropagation();
+            }}
           >
 
             {/* Header */}

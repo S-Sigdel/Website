@@ -1,3 +1,5 @@
+'use client';
+
 import SectionContainer from './SectionContainer';
 import Image from 'next/image';
 
@@ -14,9 +16,17 @@ export default function Workflow() {
   return (
     <SectionContainer id="workflow" title="Workflow">
       <div className="font-mono grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-surface0/50 p-6 border border-surface0">
-          <h3 className="text-subtext0 mb-4 border-b border-surface1 pb-2">
-             ~/.config/
+        <a 
+          href="https://github.com/s-sigdel/dotfiles" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="block bg-surface0/50 p-6 border border-surface0 rounded-lg hover:border-blue/50 transition-all group cursor-pointer"
+        >
+          <h3 className="text-subtext0 mb-4 border-b border-surface1 pb-2 group-hover:text-blue transition-colors flex items-center justify-between">
+             <span>~/.config/</span>
+             <svg className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+             </svg>
           </h3>
           <ul className="space-y-2 text-sm">
              {tools.map((tool) => (
@@ -26,7 +36,7 @@ export default function Workflow() {
                </li>
              ))}
           </ul>
-        </div>
+        </a>
 
         <div className="relative group overflow-hidden rounded-lg border border-surface0 bg-surface0/50">
           <div className="relative w-full h-full min-h-[300px]">
