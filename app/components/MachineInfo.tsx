@@ -471,6 +471,18 @@ export default function MachineInfo() {
                 </div>
               </div>
             </div>
+            
+            <div className="mt-4 pt-4 border-t border-surface0 text-xs text-center">
+              <a 
+                href="https://github.com/s-sigdel/website" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue hover:text-sapphire transition-colors inline-flex items-center gap-2 font-bold underline decoration-2 underline-offset-4"
+              >
+                <span>⚡</span>
+                This custom streaming was built by me. Click to view on GitHub.
+              </a>
+            </div>
           </div>
         ) : (
           // Fallback simple view
@@ -563,12 +575,12 @@ export default function MachineInfo() {
                 <div className="w-3 h-3 rounded-full bg-text"></div>
               </div>
               
-              <div className="mt-4 pt-4 border-t border-surface0 text-[10px] text-subtext0">
+              <div className="mt-4 pt-4 border-t border-surface0 text-xs text-center">
                 <a 
                   href="https://github.com/s-sigdel/website" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="hover:text-blue transition-colors flex items-center gap-1"
+                  className="text-blue hover:text-sapphire transition-colors inline-flex items-center gap-2 font-bold underline decoration-2 underline-offset-4"
                 >
                   <span>⚡</span>
                   This custom streaming was built by me

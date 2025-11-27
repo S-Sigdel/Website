@@ -95,6 +95,7 @@ import platform
 import os
 import sys
 import json
+import glob
 from datetime import datetime, timedelta
 
 # Configuration
@@ -102,6 +103,7 @@ from datetime import datetime, timedelta
 API_URL = os.getenv('API_URL', 'https://www.sakshyamsigdel.com.np/api/system-status')
 API_SECRET = os.getenv('API_SECRET', 'default-secret-key').strip()
 INTERVAL = 5  # Seconds
+VERSION = "1.1.2"
 
 def get_size(bytes, suffix="B"):
     """
@@ -115,6 +117,45 @@ def get_size(bytes, suffix="B"):
         if bytes < factor:
             return f"{bytes:.2f}{unit}{suffix}"
         bytes /= factor
+
+def get_gpu_info():
+    """
+    Attempt to get GPU usage.
+    For Intel iGPU on Linux, we can try reading from sysfs.
+    """
+    try:
+        # Try Intel iGPU via sysfs
+        # This path is common for Intel GPUs
+        # It returns the % of time the GPU is busy
+        paths = glob.glob('/sys/class/drm/card*/gt/gt0/busy_percent')
+        if not paths:
+            paths = glob.glob('/sys/class/drm/card*/device/gpu_busy_percent')
+            
+        if paths:
+            with open(paths[0], 'r') as f:
+                usage = int(f.read().strip())
+                return {
+                    "usage": usage,
+                    "power": 0 # Hard to get without root/tools
+                }
+    except Exception:
+        pass
+        
+    return None
+
+def get_os_name():
+    """
+    Try to get a pretty OS name from /etc/os-release
+    """
+    try:
+        if os.path.exists('/etc/os-release'):
+            with open('/etc/os-release', 'r') as f:
+                for line in f:
+                    if line.startswith('PRETTY_NAME='):
+                        return line.split('=')[1].strip().strip('"')
+    except Exception:
+        pass
+    return f"{platform.system()} {platform.release()}"
 
 def get_system_info():
     try:
@@ -162,8 +203,8 @@ def get_system_info():
         data = {
             "username": os.getenv('USER', 'user'),
             "hostname": platform.node(),
-            "os": f"{platform.system()} {platform.release()}",
-            "kernel": platform.version(),
+            "os": get_os_name(),
+            "kernel": platform.release(),
             "uptime": uptime_str,
             "shell": os.getenv('SHELL', 'unknown').split('/')[-1],
             "cpu": {
@@ -174,6 +215,7 @@ def get_system_info():
                 "power": 0,
                 "cores": cpu_cores
             },
+            "gpu": get_gpu_info(),
             "memory": f"{get_size(svmem.used)} / {get_size(svmem.total)}",
             "memoryPercent": svmem.percent,
             "battery": battery_info,
@@ -182,7 +224,8 @@ def get_system_info():
                 "five": load5,
                 "fifteen": load15
             },
-            "timestamp": time.time()
+            "timestamp": time.time(),
+            "version": VERSION
         }
         return data
     except Exception as e:
