@@ -47,14 +47,7 @@ export async function POST(request: Request) {
     // Verify authentication
     const authHeader = request.headers.get('Authorization');
     if (authHeader !== `Bearer ${API_SECRET}`) {
-      return NextResponse.json({ 
-        error: 'Unauthorized',
-        debug: {
-          receivedLength: authHeader?.length || 0,
-          expectedLength: API_SECRET.length,
-          isDefaultSecret: API_SECRET === 'default-secret-key'
-        }
-      }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const data = await request.json();

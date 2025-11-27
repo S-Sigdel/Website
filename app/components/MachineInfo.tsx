@@ -562,6 +562,18 @@ export default function MachineInfo() {
                 <div className="w-3 h-3 rounded-full bg-teal"></div>
                 <div className="w-3 h-3 rounded-full bg-text"></div>
               </div>
+              
+              <div className="mt-4 pt-4 border-t border-surface0 text-[10px] text-subtext0">
+                <a 
+                  href="https://github.com/s-sigdel/website" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="hover:text-blue transition-colors flex items-center gap-1"
+                >
+                  <span>⚡</span>
+                  This custom streaming was built by me
+                </a>
+              </div>
             </div>
           </div>
         )}

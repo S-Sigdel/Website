@@ -72,6 +72,8 @@ The system monitor uses a client-server architecture:
     -   Add `API_SECRET` with the value generated above.
     -   Redeploy the project.
 
+> **Important**: Ensure your `API_URL` uses `www.` (e.g., `https://www.sakshyamsigdel.com.np/api/system-status`) if your domain is configured that way. Vercel redirects from non-www to www can sometimes strip the Authorization header.
+
 ### 2. Host Script Setup (Your Computer)
 
 We use a Python script to collect and send data. Since the `scripts/` folder is git-ignored, you should create this file manually on your host machine.
@@ -97,9 +99,9 @@ from datetime import datetime, timedelta
 
 # Configuration
 # Default to the production URL as seen in your logs, but allow override
-API_URL = os.getenv('API_URL', 'https://sakshyamsigdel.com.np/api/system-status')
+API_URL = os.getenv('API_URL', 'https://www.sakshyamsigdel.com.np/api/system-status')
 API_SECRET = os.getenv('API_SECRET', 'default-secret-key').strip()
-INTERVAL = 2  # Seconds
+INTERVAL = 300  # Seconds
 
 def get_size(bytes, suffix="B"):
     """
@@ -144,7 +146,7 @@ def get_system_info():
         battery_info = None
         if battery:
             battery_info = {
-                "level": battery.percent,
+                "level": round(battery.percent, 2),
                 "timeRemaining": str(timedelta(seconds=battery.secsleft)) if battery.secsleft != psutil.POWER_TIME_UNLIMITED else "Charging"
             }
 
@@ -189,7 +191,6 @@ def get_system_info():
 
 def main():
     print(f"Starting monitor for {API_URL}")
-    print(f"Using Secret: {API_SECRET[:2]}***{API_SECRET[-2:] if len(API_SECRET) > 4 else ''} (Length: {len(API_SECRET)})")
     print(f"Press Ctrl+C to stop")
     
     # Check if we can connect first
