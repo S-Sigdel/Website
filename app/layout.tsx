@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "~/portfolio",
   description: "Low-level enthusiast portfolio",
   icons: {
-    icon: '/favicon.ico',
+    icon: '/favicon.svg',
   },
 };
 
