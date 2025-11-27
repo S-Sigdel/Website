@@ -220,8 +220,14 @@ export default function SearchOverlay() {
   if (!searchOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-base border border-green p-4 shadow-2xl">
+    <div 
+      className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4"
+      onClick={() => setSearchOpen(false)}
+    >
+      <div 
+        className="w-full max-w-2xl bg-base border border-green p-4 shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
          <div className="flex items-center gap-2 text-xl font-mono mb-4">
              <span className="text-green">/</span>
              <input 
@@ -263,7 +269,7 @@ export default function SearchOverlay() {
              </div>
          )}
          
-         <div className="text-xs text-overlay0 mt-4 flex justify-between font-mono">
+         <div className="text-xs text-overlay0 mt-4 hidden sm:flex justify-between font-mono">
              <span>ENTER to jump</span>
              <span>↑/↓ to navigate</span>
              <span>ESC to close</span>
