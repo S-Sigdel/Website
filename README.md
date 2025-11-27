@@ -154,6 +154,72 @@ Enable it:
 systemctl --user enable --now portfolio-monitor
 ```
 
+### 4. Local Testing Script
+
+Use this script to test the monitor locally with mock data:
+
+```python
+import time
+import requests
+import random
+from datetime import datetime
+
+# Configuration
+WEBSITE_URL = "http://localhost:3000/api/system-status"
+API_SECRET = "your-secret-key" # Make sure this matches your .env.local
+
+def main():
+    print(f"Starting local monitor for {WEBSITE_URL}")
+    while True:
+        try:
+            # Generate mock data
+            payload = {
+                "cpu": {
+                    "model": "Mock CPU Intel i9",
+                    "frequency": 3200,
+                    "usage": random.randint(10, 80),
+                    "temperature": random.randint(40, 70),
+                    "power": random.randint(20, 65),
+                    "cores": [
+                        {"id": i, "usage": random.randint(5, 90), "temperature": random.randint(35, 75)} 
+                        for i in range(8)
+                    ]
+                },
+                "gpu": {
+                    "usage": random.randint(0, 100),
+                    "power": random.randint(10, 200)
+                },
+                "memory": "16 / 32 GB",
+                "memoryPercent": random.randint(20, 90),
+                "battery": {
+                    "level": random.randint(10, 100),
+                    "timeRemaining": "02:30"
+                },
+                "timestamp": datetime.now().isoformat(),
+                "uptime": "2 days, 4 hours",
+                "os": "Local Test OS",
+                "kernel": "5.15.0-mock",
+                "shell": "zsh",
+                "wm": "MockWM"
+            }
+            
+            headers = {
+                "Authorization": f"Bearer {API_SECRET}",
+                "Content-Type": "application/json"
+            }
+            
+            response = requests.post(WEBSITE_URL, json=payload, headers=headers)
+            print(f"Sent data: {response.status_code}")
+            
+        except Exception as e:
+            print(f"Error: {e}")
+            
+        time.sleep(2)
+
+if __name__ == "__main__":
+    main()
+```
+
 ## Interesting Technical Details
 
 ### Vim Navigation

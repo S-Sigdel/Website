@@ -45,12 +45,12 @@ export default function Background() {
         0,
         currentX,
         currentY,
-        600
+        400
       );
 
-      // Subtle glow effect
-      gradient.addColorStop(0, 'rgba(203, 166, 247, 0.03)'); // Mauve with very low opacity
-      gradient.addColorStop(0.5, 'rgba(203, 166, 247, 0.01)');
+      // Stronger glow effect
+      gradient.addColorStop(0, 'rgba(203, 166, 247, 0.15)'); // Mauve with higher opacity
+      gradient.addColorStop(0.4, 'rgba(203, 166, 247, 0.05)');
       gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
       ctx.fillStyle = gradient;

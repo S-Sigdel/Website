@@ -35,6 +35,10 @@ interface LoadAverage {
   fifteen: number;
 }
 
+// Default values for offline mode
+// ...existing code...
+
+
 interface SystemInfo {
   username?: string;
   hostname?: string;
@@ -68,6 +72,16 @@ export default function MachineInfo() {
   const [error, setError] = useState<string | null>(null);
   const historyRef = useRef<{ cpu: number[]; gpu: number[]; memory: number[] }>({ cpu: [], gpu: [], memory: [] });
   const { setStatus } = useStatus();
+
+  const [currentTime, setCurrentTime] = useState<string | null>(null);
+
+  useEffect(() => {
+    setCurrentTime(new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+    const timer = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const fetchSystemInfo = async () => {
     try {
@@ -194,7 +208,7 @@ export default function MachineInfo() {
   useEffect(() => {
     setStatus({ 
       statusMessage: isOffline ? 'OFFLINE' : 'ONLINE',
-      mode: isOffline ? 'OFFLINE' : 'NORMAL'
+      mode: 'NORMAL'
     });
   }, [isOffline, setStatus]);
 
@@ -217,7 +231,7 @@ export default function MachineInfo() {
            </div>
         )}
         
-        {hasDetailedData ? (
+        {(hasDetailedData || isOffline) ? (
           // Btop-like detailed view
           <div className={`space-y-4 ${isOffline ? 'opacity-75 grayscale-[0.5]' : ''}`}>
             {/* Top Bar */}
@@ -235,7 +249,7 @@ export default function MachineInfo() {
                 <span className="text-red">preset*</span>
               </div>
               <div className="text-subtext0 hidden md:block">
-                {new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                {currentTime}
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 text-xs w-full md:w-auto">
                 {systemInfo.battery && (
@@ -323,12 +337,12 @@ export default function MachineInfo() {
               {/* Right: Detailed Stats */}
               <div className="lg:col-span-2 space-y-4">
                 {/* CPU Section */}
-                {cpuInfo && (
+                {(cpuInfo || isOffline) && (
                   <div className="bg-base p-4 rounded border border-surface0">
                     <div className="flex justify-between items-start mb-3">
                       <div>
-                        <div className="text-sm font-bold text-text">{cpuInfo.model}</div>
-                        <div className="text-xs text-subtext0">{cpuInfo.frequency} MHz</div>
+                        <div className="text-sm font-bold text-text">{cpuInfo?.model || 'System Offline'}</div>
+                        <div className="text-xs text-subtext0">{cpuInfo?.frequency || 0} MHz</div>
                       </div>
                     </div>
                     
@@ -341,22 +355,22 @@ export default function MachineInfo() {
                             <div
                               key={i}
                               className={`flex-1 h-3 rounded transition-all ${
-                                getBarColor(cpuInfo.usage, i, 20)
+                                getBarColor(cpuInfo?.usage || 0, i, 20)
                               }`}
                             />
                           ))}
                         </div>
-                        <span className={`text-xs font-bold ${getUsageColor(cpuInfo.usage)}`}>
-                          {cpuInfo.usage.toFixed(0)}%
+                        <span className={`text-xs font-bold ${getUsageColor(cpuInfo?.usage || 0)}`}>
+                          {(cpuInfo?.usage || 0).toFixed(0)}%
                         </span>
-                        <span className="text-xs text-text">{cpuInfo.temperature.toFixed(0)}°C</span>
-                        {cpuInfo.power > 0 && <span className="text-xs text-blue">{cpuInfo.power.toFixed(2)}W</span>}
+                        <span className="text-xs text-text">{(cpuInfo?.temperature || 0).toFixed(0)}°C</span>
+                        {(cpuInfo?.power || 0) > 0 && <span className="text-xs text-blue">{(cpuInfo?.power || 0).toFixed(2)}W</span>}
                       </div>
                     </div>
 
                     {/* Individual Cores */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
-                      {cpuInfo.cores.map((core) => (
+                      {(cpuInfo?.cores || Array.from({ length: 8 }).map((_, i) => ({ id: i, usage: 0, temperature: 0 }))).map((core) => (
                         <div key={core.id} className="text-xs">
                           <div className="flex items-center gap-1 mb-1">
                             <span className="text-subtext0">C{core.id}</span>
@@ -389,7 +403,7 @@ export default function MachineInfo() {
                 )}
 
                 {/* GPU Section */}
-                {gpuInfo && (
+                {(gpuInfo || isOffline) && (
                   <div className="bg-base p-4 rounded border border-surface0">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-blue font-bold">GPU</span>
@@ -398,21 +412,21 @@ export default function MachineInfo() {
                           <div
                             key={i}
                             className={`flex-1 h-3 rounded transition-all ${
-                              getBarColor(gpuInfo.usage, i, 20)
+                              getBarColor(gpuInfo?.usage || 0, i, 20)
                             }`}
                           />
                         ))}
                       </div>
-                      <span className={`text-xs font-bold ${getUsageColor(gpuInfo.usage)}`}>
-                        {gpuInfo.usage.toFixed(0)}%
+                      <span className={`text-xs font-bold ${getUsageColor(gpuInfo?.usage || 0)}`}>
+                        {(gpuInfo?.usage || 0).toFixed(0)}%
                       </span>
-                      {gpuInfo.power > 0 && <span className="text-xs text-blue">{gpuInfo.power.toFixed(2)}W</span>}
+                      {(gpuInfo?.power || 0) > 0 && <span className="text-xs text-blue">{(gpuInfo?.power || 0).toFixed(2)}W</span>}
                     </div>
                   </div>
                 )}
 
                 {/* Memory Section */}
-                {systemInfo.memoryPercent !== undefined && (
+                {(systemInfo.memoryPercent !== undefined || isOffline) && (
                   <div className="bg-base p-4 rounded border border-surface0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-xs text-blue font-bold">MEM</span>
@@ -426,12 +440,12 @@ export default function MachineInfo() {
                           />
                         ))}
                       </div>
-                      <span className={`text-xs font-bold ${getUsageColor(systemInfo.memoryPercent)}`}>
-                        {systemInfo.memoryPercent.toFixed(0)}%
+                      <span className={`text-xs font-bold ${getUsageColor(systemInfo.memoryPercent || 0)}`}>
+                        {(systemInfo.memoryPercent || 0).toFixed(0)}%
                       </span>
                     </div>
                     <div className="text-xs text-subtext0 text-right">
-                      {systemInfo.memory}
+                      {systemInfo.memory || '0 / 0 GB'}
                     </div>
                   </div>
                 )}
@@ -547,81 +561,6 @@ export default function MachineInfo() {
                 <div className="w-3 h-3 rounded-full bg-mauve"></div>
                 <div className="w-3 h-3 rounded-full bg-teal"></div>
                 <div className="w-3 h-3 rounded-full bg-text"></div>
-              </div>
-            </div>
-          </div>
-        )}
-        {/* Fastfetch Output */}
-        {systemInfo.fastfetch && (
-          <div className="mt-4 pt-4 border-t border-surface0">
-            <div className="text-xs text-subtext0 mb-2 font-bold">TERMINAL OUTPUT</div>
-            <div className="flex flex-col md:flex-row gap-8 items-center md:items-start bg-base p-6 rounded border border-surface0">
-              {/* ASCII Art Logo */}
-              <div className="text-blue font-bold whitespace-pre text-xs md:text-sm leading-tight select-none">
-{`       /\\
-      /  \\
-     /\\   \\
-    /      \\
-   /   ,,   \\
-  /   |  |  -\\
- /_-''    ''-_\\
-      btw`}
-              </div>
-              
-              {/* Clean Info List */}
-              <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-xs md:text-sm">
-                <div className="flex gap-2">
-                  <span className="text-blue font-bold min-w-[80px]">OS</span>
-                  <span className="text-text">{os}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-blue font-bold min-w-[80px]">Host</span>
-                  <span className="text-text">{hostname}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-blue font-bold min-w-[80px]">Kernel</span>
-                  <span className="text-text">{kernel}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-blue font-bold min-w-[80px]">Uptime</span>
-                  <span className="text-text">{uptime}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-blue font-bold min-w-[80px]">Shell</span>
-                  <span className="text-text">{shell}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-blue font-bold min-w-[80px]">WM</span>
-                  <span className="text-text">{wm}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-blue font-bold min-w-[80px]">Terminal</span>
-                  <span className="text-text">{terminal}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-blue font-bold min-w-[80px]">CPU</span>
-                  <span className="text-text truncate max-w-[200px]" title={cpuString}>{cpuString}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-blue font-bold min-w-[80px]">GPU</span>
-                  <span className="text-text truncate max-w-[200px]" title={gpuString}>{gpuString}</span>
-                </div>
-                <div className="flex gap-2">
-                  <span className="text-blue font-bold min-w-[80px]">Memory</span>
-                  <span className="text-text">{memory}</span>
-                </div>
-                
-                {/* Color Palette */}
-                <div className="col-span-1 md:col-span-2 mt-4 flex gap-2">
-                  <div className="w-4 h-4 rounded-full bg-base border border-surface0"></div>
-                  <div className="w-4 h-4 rounded-full bg-red"></div>
-                  <div className="w-4 h-4 rounded-full bg-green"></div>
-                  <div className="w-4 h-4 rounded-full bg-yellow"></div>
-                  <div className="w-4 h-4 rounded-full bg-blue"></div>
-                  <div className="w-4 h-4 rounded-full bg-mauve"></div>
-                  <div className="w-4 h-4 rounded-full bg-teal"></div>
-                  <div className="w-4 h-4 rounded-full bg-text"></div>
-                </div>
               </div>
             </div>
           </div>

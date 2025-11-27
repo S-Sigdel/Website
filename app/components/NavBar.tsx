@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { useSearch } from '../context/SearchContext';
 
 export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { setSearchOpen } = useSearch();
   const navItems = [
     { name: '~/intro', href: '#intro' },
     { name: '~/projects', href: '#projects' },
@@ -41,6 +43,17 @@ export default function NavBar() {
             v1.1.0
           </div>
           
+          {/* Search Button (Mobile) */}
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="md:hidden p-2 hover:bg-surface0 rounded transition-colors"
+            aria-label="Search"
+          >
+            <svg className="w-5 h-5 text-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

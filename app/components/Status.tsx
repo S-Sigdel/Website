@@ -4,6 +4,7 @@ import { useStatus } from '../context/StatusContext';
 
 export default function Status() {
   const { status } = useStatus();
+  const isOffline = status.statusMessage === 'OFFLINE';
 
   // Determine colors based on mode
   const getModeColor = () => {
@@ -37,7 +38,7 @@ export default function Status() {
           <div className="px-2 sm:px-3 py-1 text-subtext0 whitespace-nowrap hidden md:block">
             {status.fileType}
           </div>
-          <div className={`${getModeColor()} px-2 sm:px-3 py-1 font-bold transition-colors duration-200 whitespace-nowrap`}>
+          <div className={`${isOffline ? 'bg-surface1 text-subtext0' : getModeColor()} px-2 sm:px-3 py-1 font-bold transition-colors duration-200 whitespace-nowrap`}>
             {status.statusMessage}
           </div>
         </div>

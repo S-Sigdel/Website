@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import { useSearch } from '../context/SearchContext';
 
 export function useVimNavigation() {
-  const [searchOpen, setSearchOpen] = useState(false);
+  const { searchOpen, setSearchOpen } = useSearch();
   const lastKeyTime = useRef<number>(0);
   const lastKey = useRef<string>('');
   
@@ -41,6 +42,11 @@ export function useVimNavigation() {
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't scroll if modal is open
+      if (document.body.classList.contains('modal-open')) {
+        return;
+      }
+
       const active = document.activeElement;
       if (
         active?.tagName === 'INPUT' || 
@@ -92,15 +98,21 @@ export function useVimNavigation() {
       }
     };
 
+    const handleOpenSearch = () => {
+      setSearchOpen(true);
+    };
+
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
+    // window.addEventListener('open-search', handleOpenSearch); // No longer needed
     
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
+      // window.removeEventListener('open-search', handleOpenSearch);
       stopScroll();
     };
-  }, []);
+  }, [setSearchOpen]); // Added setSearchOpen dependency
 
   return { searchOpen, setSearchOpen };
 }

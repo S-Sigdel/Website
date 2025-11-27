@@ -34,7 +34,8 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
         step++;
       } else {
         clearInterval(interval);
-        setTimeout(onComplete, 800); // Wait a bit before finishing
+        // Trigger completion
+        onComplete();
       }
     }, 500); // Speed of simulation
 
@@ -42,7 +43,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-base flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[100] bg-base flex items-center justify-center p-4 transition-opacity duration-500">
       <div className="w-full max-w-2xl">
         {/* GDB Debugger Visual */}
         <div className="border-2 border-mauve rounded bg-base overflow-hidden font-mono text-xs select-none shadow-[0_0_50px_rgba(203,166,247,0.25)]">
