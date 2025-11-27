@@ -312,6 +312,27 @@ Enable it:
 systemctl --user enable --now portfolio-monitor
 ```
 
+### 4. Troubleshooting
+
+**Issue: GPU Usage is "None" or 0%**
+If you see `GPU Info: None` in the logs, your system is blocking access to the GPU performance counters. This is a common security setting on modern Linux distributions.
+
+**Fix:**
+Allow unprivileged access to performance events:
+```bash
+sudo sysctl kernel.perf_event_paranoid=1
+```
+
+To make this permanent:
+```bash
+echo "kernel.perf_event_paranoid = 1" | sudo tee /etc/sysctl.d/99-perf.conf
+```
+
+**Issue: "System Offline" on Website**
+- Ensure the script is running.
+- Check if the time on your PC matches the time on the server (UTC).
+- Verify `API_SECRET` matches.
+
 ## Interesting Technical Details
 
 ### Vim Navigation

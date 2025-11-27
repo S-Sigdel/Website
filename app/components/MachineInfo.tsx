@@ -341,8 +341,8 @@ export default function MachineInfo() {
                   <div className="bg-base p-4 rounded border border-surface0">
                     <div className="flex justify-between items-start mb-3">
                       <div>
-                        <div className="text-sm font-bold text-text">{cpuInfo?.model || 'System Offline'}</div>
-                        <div className="text-xs text-subtext0">{cpuInfo?.frequency || 0} MHz</div>
+                        <div className="text-sm font-bold text-text">{cpuInfo?.model || 'Unknown CPU'}</div>
+                        <div className="text-xs text-subtext0">{(cpuInfo?.frequency || 0).toFixed(2)} MHz</div>
                       </div>
                     </div>
                     
@@ -473,14 +473,14 @@ export default function MachineInfo() {
             </div>
             
             <div className="mt-4 pt-4 border-t border-surface0 text-xs text-center">
-              <a 
+                <a 
                 href="https://github.com/s-sigdel/website" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-blue hover:text-sapphire transition-colors inline-flex items-center gap-2 font-bold underline decoration-2 underline-offset-4"
               >
                 <span>⚡</span>
-                This custom streaming was built by me. Click to view on GitHub.
+                Live system telemetry streamed from my local machine. View source on GitHub.
               </a>
             </div>
           </div>
@@ -583,7 +583,7 @@ export default function MachineInfo() {
                   className="text-blue hover:text-sapphire transition-colors inline-flex items-center gap-2 font-bold underline decoration-2 underline-offset-4"
                 >
                   <span>⚡</span>
-                  This custom streaming was built by me
+                  Live system telemetry streamed from my local machine
                 </a>
               </div>
             </div>

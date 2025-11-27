@@ -40,7 +40,7 @@ export default function NavBar() {
         {/* Right: Version + Mobile Menu Button */}
         <div className="flex items-center gap-4">
           <div className="text-subtext0 text-xs hidden sm:block">
-            v1.1.0
+            v{process.env.NEXT_PUBLIC_APP_VERSION}
           </div>
           
           {/* Search Button (Mobile) */}
