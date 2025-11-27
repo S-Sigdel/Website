@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 # Default to the production URL as seen in your logs, but allow override
 API_URL = os.getenv('API_URL', 'https://www.sakshyamsigdel.com.np/api/system-status')
 API_SECRET = os.getenv('API_SECRET', 'default-secret-key').strip()
-INTERVAL = 300  # Seconds
+INTERVAL = 5  # Seconds
 
 def get_size(bytes, suffix="B"):
     """
