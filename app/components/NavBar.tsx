@@ -3,15 +3,20 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useSearch } from '../context/SearchContext';
+import { usePathname } from 'next/navigation';
 
 export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { setSearchOpen } = useSearch();
+  const pathname = usePathname();
+  const isHome = pathname === '/';
+
   const navItems = [
-    { name: '~/intro', href: '#intro' },
-    { name: '~/projects', href: '#projects' },
-    { name: '~/workflow', href: '#workflow' },
-    { name: '~/machine', href: '#machine' },
+    { name: '~/intro', href: isHome ? '#intro' : '/#intro' },
+    { name: '~/projects', href: isHome ? '#projects' : '/#projects' },
+    { name: '~/workflow', href: isHome ? '#workflow' : '/#workflow' },
+    { name: '~/machine', href: isHome ? '#machine' : '/#machine' },
+    { name: '~/blog', href: '/blog' },
   ];
 
   return (

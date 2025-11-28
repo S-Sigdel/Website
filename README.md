@@ -354,3 +354,47 @@ The `MachineInfo` component compares the server timestamp with the client's curr
 const isOffline = (Date.now() / 1000 - timestampSecs) > 60;
 ```
 If the difference exceeds 60 seconds, the UI applies a grayscale filter and updates the global status bar to "OFFLINE".
+
+## Blog System
+
+The website features a fully automated, markdown-based blog system.
+
+### How to Add a Post
+
+1.  Create a new markdown file in the `blogs/` directory (e.g., `blogs/my-new-post.md`).
+2.  Add the required frontmatter at the top of the file:
+
+```markdown
+---
+title: "My New Post"
+date: "2025-11-28"
+excerpt: "A short description of the post."
+tags: ["tag1", "tag2"]
+---
+
+# My New Post
+
+Write your content here using standard markdown.
+```
+
+3.  Push your changes. The website will automatically generate the route `/blog/my-new-post` and add it to the blog index.
+
+### Features
+
+- **Automated Routing**: No manual configuration needed.
+- **Syntax Highlighting**: Code blocks are automatically highlighted using `highlight.js` (Atom One Dark theme).
+- **Tagging System**: Organize posts with tags.
+- **Images**: Support for optimized images.
+
+### Adding Images
+
+To add images to your blog posts:
+
+1.  Place your image files in the `public/images/blog/` directory.
+2.  Reference them in your markdown file using the path `/images/blog/filename.png`:
+
+```markdown
+![My Image](/images/blog/my-image.png)
+```
+
+The system automatically optimizes these images using Next.js Image component.

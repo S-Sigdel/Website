@@ -1,15 +1,33 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { useVimNavigation } from '../hooks/useVimNavigation';
 import { PROJECTS, DEVPOST_PROJECTS } from '../data/projects';
 
+interface BlogPost {
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+}
+
 export default function SearchOverlay() {
   const { searchOpen, setSearchOpen } = useVimNavigation();
+  const router = useRouter();
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-  const [results, setResults] = useState<{id: string, text: string, type: string, element?: HTMLElement, projectTitle?: string}[]>([]);
+  const [results, setResults] = useState<{id: string, text: string, type: string, element?: HTMLElement, projectTitle?: string, slug?: string}[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    // Fetch blog posts on mount
+    fetch('/api/blogs')
+      .then(res => res.json())
+      .then(data => setBlogPosts(data))
+      .catch(err => console.error('Failed to fetch blogs:', err));
+  }, []);
 
   useEffect(() => {
     if (searchOpen) {
@@ -38,7 +56,7 @@ export default function SearchOverlay() {
       }
       
       const queryLower = query.toLowerCase();
-      const hits: {id: string, text: string, type: string, element?: HTMLElement, projectTitle?: string}[] = [];
+      const hits: {id: string, text: string, type: string, element?: HTMLElement, projectTitle?: string, slug?: string}[] = [];
       
       // 1. Search in Projects Data
       const allProjects = [...PROJECTS, ...DEVPOST_PROJECTS];
@@ -53,7 +71,19 @@ export default function SearchOverlay() {
         }
       });
 
-      // 2. Search in DOM content (Sections)
+      // 2. Search in Blog Posts
+      blogPosts.forEach(post => {
+        if (post.title.toLowerCase().includes(queryLower) || post.excerpt.toLowerCase().includes(queryLower) || post.content.toLowerCase().includes(queryLower)) {
+          hits.push({
+            id: `blog-${post.slug}`,
+            text: post.title,
+            type: 'blog',
+            slug: post.slug
+          });
+        }
+      });
+
+      // 3. Search in DOM content (Sections)
       const sections = document.querySelectorAll('section, [id]');
       sections.forEach(section => {
           const id = section.id;
@@ -91,7 +121,7 @@ export default function SearchOverlay() {
       if (hits.length > 0) {
           highlightResult(hits[0]);
       }
-  }, [query]);
+  }, [query, blogPosts]);
 
   const highlightResult = (result: typeof results[0]) => {
       // Remove old highlights
@@ -102,7 +132,7 @@ export default function SearchOverlay() {
       if (result.element) {
           result.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
           result.element.classList.add('search-highlight', 'ring-2', 'ring-yellow', 'ring-opacity-50', 'bg-yellow/10', 'transition-all', 'duration-300');
-      } else if (result.id) {
+      } else if (result.id && result.type !== 'blog') {
           const el = document.getElementById(result.id);
           if (el) {
               el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -133,6 +163,10 @@ export default function SearchOverlay() {
           // Dispatch event to open project
           const event = new CustomEvent('open-project', { detail: result.projectTitle });
           window.dispatchEvent(event);
+          setSearchOpen(false);
+          setQuery('');
+      } else if (result.type === 'blog' && result.slug) {
+          router.push(`/blog/${result.slug}`);
           setSearchOpen(false);
           setQuery('');
       } else {
@@ -206,6 +240,8 @@ export default function SearchOverlay() {
                   // Vim 'n' usually just jumps.
                   const el = document.getElementById('projects');
                   el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              } else if (res.type === 'blog' && res.slug) {
+                  router.push(`/blog/${res.slug}`);
               } else {
                   highlightResult(res);
               }
@@ -214,7 +250,7 @@ export default function SearchOverlay() {
       
       window.addEventListener('keydown', handleGlobalKeyDown);
       return () => window.removeEventListener('keydown', handleGlobalKeyDown);
-  }, [searchOpen, results, selectedIndex]);
+  }, [searchOpen, results, selectedIndex, router]);
 
 
   if (!searchOpen) return null;
@@ -253,6 +289,10 @@ export default function SearchOverlay() {
                              {res.type === 'project' ? (
                                <svg className="w-4 h-4 text-blue flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                               </svg>
+                             ) : res.type === 'blog' ? (
+                               <svg className="w-4 h-4 text-mauve flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                                </svg>
                              ) : (
                                <svg className="w-4 h-4 text-subtext0 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
