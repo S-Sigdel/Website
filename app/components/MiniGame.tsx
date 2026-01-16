@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-export default function MiniGame() {
+export default function MiniGame({ speed = 1.8 }: { speed?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [gameState, setGameState] = useState<'start' | 'playing' | 'gameover'>('start');
   const [score, setScore] = useState(0);
@@ -77,9 +77,9 @@ export default function MiniGame() {
     const OBSTACLE_GAP = 70; // Slightly wider for better playability with coins
     const OBSTACLE_WIDTH = 30;
     const PLAYER_RADIUS = 10;
-    const GRAVITY = 0.25;
+    const GRAVITY = 0.1;
     const JUMP_FORCE = -3.5;
-    const SPEED = 2.5;
+    const SPEED = speed;
 
     // Reset player on start
     if (gameState === 'playing') {
