@@ -50,7 +50,7 @@ export default function Intro() {
           
           <div className="max-w-2xl text-subtext1 leading-relaxed">
             <p className="mb-4">
-              <span className="text-mauve">constexpr</span> <span className="text-blue">std::string_view</span> <span className="text-yellow">bio</span> <span className="text-text">{'{'}</span> <span className="text-green">&quot;Not your average React developer. I dive deep into the stack, from silicon to software. C++ is my bread and butter.&quot;</span> <span className="text-text">{'}'}</span>;
+              <span className="text-mauve">constexpr</span> <span className="text-blue">std::string_view</span> <span className="text-yellow">bio</span> <span className="text-text">{'{'}</span> <span className="text-green">&quot;Not your average web dev. I live in the parts of the stack where latency, reliability, and \&quot;what happens when this box dies\&quot; are the hard questions.&quot;</span> <span className="text-text">{'}'}</span>;
             </p>
             <p>
                I specialize in embedded systems, low-level optimization, and building things that run close to the metal. 

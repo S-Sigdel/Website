@@ -30,7 +30,7 @@ export default function MiniGame({ speed = 1.8 }: { speed?: number }) {
 
   const handleJump = () => {
     if (gameState === 'playing') {
-      playerRef.current.velocity = -3.5; // JUMP force
+      playerRef.current.velocity = -5.5; // JUMP force
     } else if (gameState === 'start') {
       setGameState('playing');
     } else if (gameState === 'gameover') {
@@ -77,8 +77,8 @@ export default function MiniGame({ speed = 1.8 }: { speed?: number }) {
     const OBSTACLE_GAP = 70; // Slightly wider for better playability with coins
     const OBSTACLE_WIDTH = 30;
     const PLAYER_RADIUS = 10;
-    const GRAVITY = 0.1;
-    const JUMP_FORCE = -3.5;
+    const GRAVITY = 0.28;
+    const JUMP_FORCE = -5.5;
     const SPEED = speed;
 
     // Reset player on start

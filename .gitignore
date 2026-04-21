@@ -42,3 +42,9 @@ next-env.d.ts
 
 # scripts
 /scripts
+
+# claude code
+.claude/
+
+# readme / docs
+README.md

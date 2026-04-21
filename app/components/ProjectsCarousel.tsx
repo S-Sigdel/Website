@@ -135,7 +135,7 @@ export default function ProjectsCarousel() {
   const openModal = useCallback((project: Project) => {
     if (project.isDevpost) {
       setShowDevpostModal(true);
-    } else if (project.images.length > 0) {
+    } else {
       setSelectedProject(project);
       setCurrentImageIndex(0);
     }
@@ -245,7 +245,7 @@ export default function ProjectsCarousel() {
   return (
     <>
       <SectionContainer id="projects" title="Projects">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono">
           {PROJECTS.map((project, index) => {
             const currentCardImageIndex = cardImageIndex[index] || 0;
             const hasImages = project.images.length > 0;
@@ -254,9 +254,11 @@ export default function ProjectsCarousel() {
             return (
               <div
                 key={index}
-                className={`group border bg-surface0/50 overflow-hidden cursor-pointer transition-all rounded-xl ${
+                className={`group border bg-surface0/50 overflow-hidden cursor-pointer transition-all rounded-xl relative ${
                   project.isDevpost
-                    ? 'md:col-span-2 border-yellow/70 border-2 hover:border-yellow hover:shadow-lg hover:shadow-yellow/30 relative'
+                    ? 'md:col-span-3 border-yellow/70 border-2 hover:border-yellow hover:shadow-lg hover:shadow-yellow/30'
+                    : project.isWinner
+                    ? 'border-[#FFD700] border-2 hover:shadow-lg hover:shadow-yellow/20'
                     : 'border-surface0 hover:border-green/50 hover:shadow-lg hover:shadow-green/10'
                 }`}
                 style={project.isDevpost ? {
@@ -264,6 +266,13 @@ export default function ProjectsCarousel() {
                 } : undefined}
                 onClick={() => openModal(project)}
               >
+                {project.isWinner && !project.isDevpost && (
+                  <div className="absolute -top-2 -right-2 z-20 overflow-hidden w-24 h-24 pointer-events-none">
+                    <div className="absolute top-[18px] right-[-28px] rotate-45 bg-[#FFD700] text-black font-bold py-1 w-32 text-center shadow-lg border-y-2 border-base text-xs">
+                      WINNER
+                    </div>
+                  </div>
+                )}
                 {displayImage && (
                   <div className="relative w-full h-48 overflow-hidden bg-surface1">
                     <Image
@@ -468,19 +477,34 @@ export default function ProjectsCarousel() {
                     </div>
                   </div>
 
-                  {selectedProject.link && (
-                    <div className="pt-4 border-t border-surface1">
-                      <Link
-                        href={selectedProject.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-green text-base font-bold rounded-lg hover:bg-green/90 transition-colors"
-                      >
-                        <span>View Source Code</span>
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </Link>
+                  {(selectedProject.link || selectedProject.devpostLink) && (
+                    <div className="pt-4 border-t border-surface1 flex gap-3 flex-wrap">
+                      {selectedProject.link && (
+                        <Link
+                          href={selectedProject.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-green text-base font-bold rounded-lg hover:bg-green/90 transition-colors"
+                        >
+                          <span>GitHub</span>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </Link>
+                      )}
+                      {selectedProject.devpostLink && (
+                        <Link
+                          href={selectedProject.devpostLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-yellow/20 text-yellow font-bold rounded-lg hover:bg-yellow/30 transition-colors border border-yellow/40"
+                        >
+                          <span>Devpost</span>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </Link>
+                      )}
                     </div>
                   )}
                </div>
@@ -613,19 +637,34 @@ export default function ProjectsCarousel() {
                           ))}
                         </div>
                         
-                        {project.link && (
-                          <div className="pt-3 border-t border-surface1 mt-auto">
-                            <Link
-                              href={project.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs text-green hover:underline flex items-center gap-1"
-                            >
-                              <span>View Project</span>
-                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                              </svg>
-                            </Link>
+                        {(project.link || project.githubLink) && (
+                          <div className="pt-3 border-t border-surface1 mt-auto flex items-center gap-3 flex-wrap">
+                            {project.link && (
+                              <Link
+                                href={project.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-yellow hover:underline flex items-center gap-1"
+                              >
+                                <span>Devpost</span>
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                              </Link>
+                            )}
+                            {project.githubLink && (
+                              <Link
+                                href={project.githubLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-green hover:underline flex items-center gap-1"
+                              >
+                                <span>GitHub</span>
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                              </Link>
+                            )}
                           </div>
                         )}
                       </div>

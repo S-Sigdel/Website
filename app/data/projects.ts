@@ -4,6 +4,8 @@ export interface Project {
   languages: string[];
   color?: string;
   link?: string;
+  githubLink?: string;
+  devpostLink?: string;
   images: string[];
   location?: string;
   isDevpost?: boolean;
@@ -11,6 +13,16 @@ export interface Project {
 }
 
 export const PROJECTS: Project[] = [
+    {
+      title: "Curtain",
+      desc: "Won the Scalability Track at the MLH Production Engineering Hackathon (Meta-sponsored) by architecting a load-balanced web service with a resilient PostgreSQL fallback. Optimized heavy data ingestion via Redis sharding and async stream consumers. Integrated end-to-end observability and automated alerting with Prometheus, Grafana, and Discord relays.",
+      languages: ["Python", "Redis", "PostgreSQL", "Docker", "Prometheus"],
+      link: "https://github.com/S-Sigdel/Curtain/",
+      devpostLink: "https://devpost.com/software/curtain",
+      images: ["/curtain1.jpg", "/curtain2.png"],
+      location: "MLH Prod Eng. Hackathon (Meta-sponsored)",
+      isWinner: true
+    },
     {
       title: "SenseNav",
       desc: "Spatial audio navigation system combining LiDAR obstacle detection with 360° spatial audio feedback. Built with Arduino and custom circuitry for real-time processing. Features binaural panning, distance-based audio cues, and obstacle prioritization for enhanced accessibility.",
@@ -81,5 +93,5 @@ export const DEVPOST_PROJECTS: Project[] = [
       location: "Davidson College, Davidson",
       images: ["/approachComparisionNobrainstorm.png", "/nobrainstormgraph.png"],
       isWinner: true
-    }
+    },
 ];

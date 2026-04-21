@@ -4,15 +4,23 @@ import { useState, useEffect } from 'react';
 
 export default function VimTip() {
   const [isVisible, setIsVisible] = useState(true);
+  const [isFading, setIsFading] = useState(false);
+
+  useEffect(() => {
+    const fadeTimer = setTimeout(() => setIsFading(true), 6000);
+    const hideTimer = setTimeout(() => setIsVisible(false), 6500);
+    return () => { clearTimeout(fadeTimer); clearTimeout(hideTimer); };
+  }, []);
 
   const handleDismiss = () => {
-    setIsVisible(false);
+    setIsFading(true);
+    setTimeout(() => setIsVisible(false), 500);
   };
 
   if (!isVisible) return null;
 
   return (
-    <div className="hidden md:block fixed top-20 right-4 z-50 bg-surface0/95 border border-surface1 rounded-lg shadow-lg p-3 font-mono text-xs text-subtext0 max-w-xs backdrop-blur-sm animate-pop">
+    <div className={`hidden md:block fixed top-20 right-4 z-50 bg-surface0/95 border border-surface1 rounded-lg shadow-lg p-3 font-mono text-xs text-subtext0 max-w-xs backdrop-blur-sm animate-pop transition-opacity duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}>
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <div className="flex items-center gap-1.5 mb-2">
