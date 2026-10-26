@@ -57,10 +57,7 @@ export const PROJECTS: Project[] = [
     stack: "Python · Vim",
     href: "https://github.com/S-Sigdel/vimhjkl",
     note: "AUR · Homebrew",
-    snippet: [
-      "$ brew install S-Sigdel/tap/vimhjkl",
-      "$ vimhjkl --drill",
-    ],
+    image: "/vimhjkl.png",
   },
   {
     title: "SenseNav",
@@ -75,10 +72,7 @@ export const PROJECTS: Project[] = [
     stack: "Rust",
     href: "https://github.com/S-Sigdel/hyprdrover",
     note: "AUR",
-    snippet: [
-      "$ hyprdrover --save my-workflow",
-      "$ hyprdrover --load my-workflow",
-    ],
+    image: "/hyprdrover.png",
   },
   {
     title: "Bionic arm hand tracking",
