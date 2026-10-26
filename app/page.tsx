@@ -5,7 +5,7 @@ import SiteFooter from './components/SiteFooter';
 import PacFlap from './components/PacFlap';
 import { Ghost, Pac } from './components/Sprites';
 import { getSortedPostsData } from '../lib/blog';
-import { LINKS, EXPERIENCE, PROJECTS, HACKATHONS, DEVPOST } from './data/site';
+import { LINKS, PHOTOS, EXPERIENCE, PROJECTS, HACKATHONS, DEVPOST, type Project } from './data/site';
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
@@ -17,6 +17,59 @@ function SectionTitle({ icon, children }: { icon: React.ReactNode; children: Rea
       {icon}
       {children}
     </h2>
+  );
+}
+
+function Snippet({ lines }: { lines: string[] }) {
+  return (
+    <pre className="flex h-full items-center overflow-x-auto bg-[#161616] px-4 py-5 font-mono text-[12px] leading-relaxed text-[#d4d4d4]">
+      <code>
+        {lines.map((line) => (
+          <span
+            key={line}
+            className={`block ${line.startsWith('-') ? 'text-[#ff7b7b]' : line.startsWith('+') ? 'text-[#7ee2a8]' : ''}`}
+          >
+            {line}
+          </span>
+        ))}
+      </code>
+    </pre>
+  );
+}
+
+function ProjectCard({ project }: { project: Project }) {
+  return (
+    <li className="group flex flex-col overflow-hidden rounded-xl border border-line transition hover:-translate-y-0.5 hover:border-clyde sm:[&:last-child:nth-child(odd)]:col-span-2">
+      <a href={project.href} className="relative block aspect-[16/9] overflow-hidden border-b border-line bg-[#161616]">
+        {project.image ? (
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            sizes="(max-width: 640px) 100vw, 336px"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+        ) : (
+          project.snippet && <Snippet lines={project.snippet} />
+        )}
+      </a>
+      <div className="flex flex-1 flex-col p-4">
+        <a href={project.href}>
+          <h3 className="font-medium transition-colors group-hover:text-clyde">{project.title}</h3>
+        </a>
+        <p className="mt-1 flex-1 text-sm leading-relaxed text-muted">{project.desc}</p>
+        <p className="mt-3 font-mono text-xs text-muted">
+          {project.stack}
+          {project.note && <span className="text-clyde"> · {project.note}</span>}
+          {project.writeup && (
+            <>
+              {' · '}
+              <Link href={project.writeup} className="link">write-up</Link>
+            </>
+          )}
+        </p>
+      </div>
+    </li>
   );
 }
 
@@ -55,6 +108,17 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <ul className="-mt-4 grid grid-cols-3 gap-3">
+          {PHOTOS.map((photo, i) => (
+            <li key={photo.src} className={i % 2 ? 'rotate-1' : '-rotate-1'}>
+              <div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-line">
+                <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 640px) 33vw, 220px" className="object-cover" />
+              </div>
+              <p className="mt-2 text-center text-[11px] leading-tight text-muted">{photo.caption}</p>
+            </li>
+          ))}
+        </ul>
 
         <section>
           <SectionTitle icon={<Ghost className="text-pinky" />}>Now</SectionTitle>
@@ -113,43 +177,48 @@ export default function Home() {
 
         <section id="projects" className="scroll-mt-8">
           <SectionTitle icon={<Ghost className="text-clyde" />}>Projects</SectionTitle>
-          <ul className="space-y-7">
+          <ul className="grid gap-4 sm:grid-cols-2">
             {PROJECTS.map((project) => (
-              <li key={project.title}>
-                <a href={project.href} className="group">
-                  <h3 className="font-medium underline decoration-transparent underline-offset-[3px] transition-colors group-hover:text-clyde group-hover:decoration-current">
-                    {project.title}
-                  </h3>
-                </a>
-                <p className="mt-1 leading-relaxed text-muted">{project.desc}</p>
-                <p className="mt-1.5 font-mono text-xs text-muted">
-                  {project.stack}
-                  {project.note && <span className="text-clyde"> · {project.note}</span>}
-                  {project.writeup && (
-                    <>
-                      {' · '}
-                      <Link href={project.writeup} className="link">write-up</Link>
-                    </>
-                  )}
-                </p>
-              </li>
+              <ProjectCard key={project.title} project={project} />
             ))}
           </ul>
         </section>
 
         <section>
           <SectionTitle icon={<Pac className="text-pac" />}>Hackathons</SectionTitle>
-          <ul className="space-y-3">
-            {HACKATHONS.map((hack) => (
-              <li key={hack.title} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                <span className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  <a href={hack.href} className="link">{hack.title}</a>
-                  {hack.prize && (
-                    <span className="rounded bg-pac px-1.5 py-px text-[11px] font-medium text-black">
-                      {hack.prize}
+          <ul className="grid gap-4 sm:grid-cols-2">
+            {HACKATHONS.filter((hack) => hack.prize).map((hack) => (
+              <li key={hack.title} className="group overflow-hidden rounded-xl border border-line transition hover:-translate-y-0.5 hover:border-pac">
+                <a href={hack.href} className="block">
+                  <div className="relative aspect-[16/9] overflow-hidden border-b border-line bg-[#161616]">
+                    {hack.image && (
+                      <Image
+                        src={hack.image}
+                        alt={hack.title}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 336px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      />
+                    )}
+                    <span className="absolute left-3 top-3 rounded-md bg-pac px-2 py-0.5 text-xs font-semibold text-black shadow-sm">
+                      Winner · {hack.prize}
                     </span>
-                  )}
-                </span>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-medium">{hack.title}</h3>
+                    <p className="mt-0.5 font-mono text-xs text-muted">{hack.event}</p>
+                    {hack.desc && <p className="mt-2 text-sm leading-relaxed text-muted">{hack.desc}</p>}
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="mb-3 mt-8 text-sm text-muted">Also built</h3>
+          <ul className="space-y-2">
+            {HACKATHONS.filter((hack) => !hack.prize).map((hack) => (
+              <li key={hack.title} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                <a href={hack.href} className="link">{hack.title}</a>
                 <span className="text-sm text-muted sm:text-right">{hack.event}</span>
               </li>
             ))}

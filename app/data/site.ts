@@ -5,6 +5,12 @@ export const LINKS = [
   { label: "Résumé", href: "/Resume.pdf" },
 ];
 
+export const PHOTOS = [
+  { src: "/senseNav.jpeg", alt: "Demoing SenseNav with a teammate at a hackathon", caption: "Demoing SenseNav" },
+  { src: "/workspace.jpg", alt: "Laptop and keyboard on the floor", caption: "Where most of the code happens" },
+  { src: "/realtimeHandTracking.png", alt: "3D-printed bionic hand mirroring a real hand", caption: "Bionic hand copying mine" },
+];
+
 export interface Project {
   title: string;
   desc: string;
@@ -12,6 +18,9 @@ export interface Project {
   href: string;
   note?: string;
   writeup?: string;
+  // Either a screenshot or a few lines of the real thing
+  image?: string;
+  snippet?: string[];
 }
 
 export const PROJECTS: Project[] = [
@@ -22,6 +31,11 @@ export const PROJECTS: Project[] = [
     href: "https://gitlab.com/procps-ng/procps/-/merge_requests/310",
     note: "Open source · Merged",
     writeup: "/blog/vmstat-one-word-fix",
+    snippet: [
+      "  V(10) = SYSv(stat_INT) / uptime;",
+      "- V(11) = SYSv(stat_CTX) / Div;",
+      "+ V(11) = SYSv(stat_CTX) / uptime;",
+    ],
   },
   {
     title: "Wildfire CNN→VLM cascade",
@@ -29,6 +43,19 @@ export const PROJECTS: Project[] = [
     stack: "Python · YOLO · Gemma · Jetson",
     href: "https://github.com/S-Sigdel/wildfire-cnn-vlm-cascade",
     note: "Paper",
+    snippet: [
+      "frame → YOLO smoke gate (~1 ms)",
+      "  p < 0.20     → CLEAR",
+      "  0.20 – 0.85  → Gemma VLM → JSON",
+      "  p ≥ 0.85     → SMOKE_HIGH",
+    ],
+  },
+  {
+    title: "Curtain",
+    desc: "Load-balanced web service with a PostgreSQL fallback and Redis-sharded ingestion with async stream consumers, watched in Grafana.",
+    stack: "Python · Redis · PostgreSQL · Docker",
+    href: "https://github.com/S-Sigdel/Curtain",
+    image: "/curtain2.png",
   },
   {
     title: "vimhjkl",
@@ -36,31 +63,35 @@ export const PROJECTS: Project[] = [
     stack: "Python · Vim",
     href: "https://github.com/S-Sigdel/vimhjkl",
     note: "AUR · Homebrew",
-  },
-  {
-    title: "hyprdrover",
-    desc: "Snapshots and restores Hyprland window layouts: workspaces, positions, sizes, and the apps that were open.",
-    stack: "Rust",
-    href: "https://github.com/S-Sigdel/hyprdrover",
-  },
-  {
-    title: "Curtain",
-    desc: "Load-balanced web service with a PostgreSQL fallback and Redis-sharded ingestion with async stream consumers.",
-    stack: "Python · Redis · PostgreSQL · Docker",
-    href: "https://github.com/S-Sigdel/Curtain",
-    note: "Won Scalability Track, MLH Production Engineering Hackathon",
+    snippet: [
+      "$ brew install S-Sigdel/tap/vimhjkl",
+      "$ vimhjkl --drill",
+    ],
   },
   {
     title: "SenseNav",
     desc: "LiDAR obstacle detection turned into 360° spatial audio, so you can hear where things are. Arduino and custom circuitry.",
     stack: "C++ · Arduino",
     href: "https://github.com/S-Sigdel/SenseNav",
+    image: "/sensenavmidas.jpeg",
+  },
+  {
+    title: "hyprdrover",
+    desc: "Snapshots and restores Hyprland window layouts: workspaces, positions, sizes, and the apps that were open.",
+    stack: "Rust",
+    href: "https://github.com/S-Sigdel/hyprdrover",
+    note: "AUR",
+    snippet: [
+      "$ hyprdrover --save my-workflow",
+      "$ hyprdrover --load my-workflow",
+    ],
   },
   {
     title: "Bionic arm hand tracking",
     desc: "OpenCV hand tracking that drives the servos of a 3D-printed prosthetic arm in real time.",
     stack: "Python · OpenCV · Arduino",
     href: "https://github.com/S-Sigdel/handTrackingForBionicArm",
+    image: "/handTracking.png",
   },
 ];
 
@@ -102,14 +133,44 @@ export interface Hackathon {
   title: string;
   event: string;
   prize?: string;
+  image?: string;
+  desc?: string;
   href: string;
 }
 
 export const HACKATHONS: Hackathon[] = [
-  { title: "Hermes", event: "Midnight Hackathon", prize: "AI Track", href: "https://devpost.com/software/hermes-7txsej" },
-  { title: "Acroswe", event: "HackPrinceton Spring 2025", prize: "Best Use of Blockchain + AI", href: "https://devpost.com/software/acroswe" },
-  { title: "noBrainstorm", event: "Hack@Davidson 2025", prize: "Second Overall", href: "https://devpost.com/software/nobrainstorm" },
-  { title: "Curtain", event: "MLH Production Engineering Hackathon", prize: "Scalability Track", href: "https://devpost.com/software/curtain" },
+  {
+    title: "Hermes",
+    event: "Midnight Hackathon",
+    prize: "AI Track",
+    image: "/hermes.jpg",
+    desc: "Anonymous forum where you prove karma, age and membership with zero-knowledge proofs.",
+    href: "https://devpost.com/software/hermes-7txsej",
+  },
+  {
+    title: "Acroswe",
+    event: "HackPrinceton Spring 2025",
+    prize: "Best Use of Blockchain + AI",
+    image: "/acroswefrontend.jpg",
+    desc: "Home price prediction, with purchases settled as NFTs on-chain.",
+    href: "https://devpost.com/software/acroswe",
+  },
+  {
+    title: "noBrainstorm",
+    event: "Hack@Davidson 2025",
+    prize: "Second Overall",
+    image: "/nobrainstormgraph.png",
+    desc: "Whiteboard that turns brainstorms into graphs, plans and to-do lists with AI.",
+    href: "https://devpost.com/software/nobrainstorm",
+  },
+  {
+    title: "Curtain",
+    event: "MLH Production Engineering Hackathon",
+    prize: "Scalability Track",
+    image: "/curtain1.jpg",
+    desc: "Load-balanced service with Redis sharding and a PostgreSQL fallback.",
+    href: "https://devpost.com/software/curtain",
+  },
   { title: "Zepic", event: "LA Hacks 2026", href: "https://devpost.com/software/zepic" },
   { title: "SpecGuardian", event: "GitLab AI Hackathon", href: "https://devpost.com/software/viewtower" },
   { title: "Tribe28", event: "Team USA × Google Cloud Hackathon", href: "https://devpost.com/software/propeller" },
