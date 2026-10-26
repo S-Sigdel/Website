@@ -69,24 +69,18 @@ a {
   text-underline-offset: 3px;
 }
 
-/* Links: tinted underline that fills in on hover */
+/* Links: faint underline that darkens on hover */
 .link {
   text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--inky) 45%, transparent);
-  text-decoration-thickness: 1.5px;
-  transition: text-decoration-color 150ms, color 150ms;
+  text-decoration-color: var(--line);
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 150ms;
 }
 
 .link:hover {
-  color: var(--inky);
   text-decoration-color: currentColor;
 }
 
-/* Highlighter swipe behind the name */
-.marker {
-  background: linear-gradient(transparent 58%, color-mix(in srgb, var(--pac) 55%, transparent) 58%);
-  padding: 0 0.1em;
-}
 
 /* Pac-Man pellets leading down to the game */
 .pellets {
@@ -107,7 +101,7 @@ a {
   --tw-prose-body: var(--fg);
   --tw-prose-headings: var(--fg);
   --tw-prose-lead: var(--muted);
-  --tw-prose-links: var(--inky);
+  --tw-prose-links: var(--fg);
   --tw-prose-bold: var(--fg);
   --tw-prose-counters: var(--muted);
   --tw-prose-bullets: var(--muted);

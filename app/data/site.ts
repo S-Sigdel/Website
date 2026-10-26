@@ -5,12 +5,6 @@ export const LINKS = [
   { label: "Résumé", href: "/Resume.pdf" },
 ];
 
-export const PHOTOS = [
-  { src: "/senseNav.jpeg", alt: "Demoing SenseNav with a teammate at a hackathon", caption: "Demoing SenseNav" },
-  { src: "/workspace.jpg", alt: "Laptop and keyboard on the floor", caption: "Where most of the code happens" },
-  { src: "/realtimeHandTracking.png", alt: "3D-printed bionic hand mirroring a real hand", caption: "Bionic hand copying mine" },
-];
-
 export interface Project {
   title: string;
   desc: string;

@@ -5,7 +5,7 @@ import SiteFooter from './components/SiteFooter';
 import PacFlap from './components/PacFlap';
 import { Ghost, Pac } from './components/Sprites';
 import { getSortedPostsData } from '../lib/blog';
-import { LINKS, PHOTOS, EXPERIENCE, PROJECTS, HACKATHONS, DEVPOST, type Project } from './data/site';
+import { LINKS, EXPERIENCE, PROJECTS, HACKATHONS, DEVPOST, type Project } from './data/site';
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
@@ -39,7 +39,7 @@ function Snippet({ lines }: { lines: string[] }) {
 
 function ProjectCard({ project }: { project: Project }) {
   return (
-    <li className="group flex flex-col overflow-hidden rounded-xl border border-line transition hover:-translate-y-0.5 hover:border-clyde sm:[&:last-child:nth-child(odd)]:col-span-2">
+    <li className="group flex flex-col overflow-hidden rounded-xl border border-line transition hover:border-muted">
       <a href={project.href} className="relative block aspect-[16/9] overflow-hidden border-b border-line bg-[#161616]">
         {project.image ? (
           <Image
@@ -55,12 +55,12 @@ function ProjectCard({ project }: { project: Project }) {
       </a>
       <div className="flex flex-1 flex-col p-4">
         <a href={project.href}>
-          <h3 className="font-medium transition-colors group-hover:text-clyde">{project.title}</h3>
+          <h3 className="font-medium underline decoration-transparent underline-offset-[3px] transition-colors group-hover:decoration-current">{project.title}</h3>
         </a>
         <p className="mt-1 flex-1 text-sm leading-relaxed text-muted">{project.desc}</p>
         <p className="mt-3 font-mono text-xs text-muted">
           {project.stack}
-          {project.note && <span className="text-clyde"> · {project.note}</span>}
+          {project.note && <span className="text-fg"> · {project.note}</span>}
           {project.writeup && (
             <>
               {' · '}
@@ -89,11 +89,11 @@ export default function Home() {
             height={176}
             sizes="176px"
             priority
-            className="h-40 w-40 shrink-0 -rotate-2 rounded-2xl object-cover shadow-[6px_6px_0_var(--pac)] transition-transform duration-300 hover:rotate-0 sm:h-44 sm:w-44"
+            className="h-40 w-40 shrink-0 rounded-2xl object-cover sm:h-44 sm:w-44"
           />
           <div className="space-y-4">
             <h1 className="text-3xl font-semibold tracking-tight">
-              <span className="marker">Sakshyam Sigdel</span>
+              Sakshyam Sigdel
             </h1>
             <p className="leading-relaxed">
               Student at the University of Southern Mississippi. I work on Linux, systems software, and
@@ -109,19 +109,8 @@ export default function Home() {
           </div>
         </section>
 
-        <ul className="-mt-4 grid grid-cols-3 gap-3">
-          {PHOTOS.map((photo, i) => (
-            <li key={photo.src} className={i % 2 ? 'rotate-1' : '-rotate-1'}>
-              <div className="relative aspect-[4/5] overflow-hidden rounded-lg border border-line">
-                <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 640px) 33vw, 220px" className="object-cover" />
-              </div>
-              <p className="mt-2 text-center text-[11px] leading-tight text-muted">{photo.caption}</p>
-            </li>
-          ))}
-        </ul>
-
         <section>
-          <SectionTitle icon={<Ghost className="text-blinky" />}>Experience</SectionTitle>
+          <SectionTitle icon={<Ghost />}>Experience</SectionTitle>
           <ul className="space-y-10">
             {EXPERIENCE.map((job) => (
               <li key={job.role}>
@@ -136,7 +125,7 @@ export default function Home() {
                 <ul className="mt-3 space-y-2">
                   {job.bullets.map((bullet) => (
                     <li key={bullet} className="flex gap-3 leading-relaxed">
-                      <span aria-hidden className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-blinky" />
+                      <span aria-hidden className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-muted" />
                       <span>{bullet}</span>
                     </li>
                   ))}
@@ -148,7 +137,7 @@ export default function Home() {
 
         {posts.length > 0 && (
           <section>
-            <SectionTitle icon={<Ghost className="text-inky" />}>Writing</SectionTitle>
+            <SectionTitle icon={<Ghost />}>Writing</SectionTitle>
             <ul className="space-y-3">
               {posts.map((post) => (
                 <li key={post.slug} className="flex flex-col gap-0.5 sm:flex-row sm:gap-6">
@@ -163,7 +152,7 @@ export default function Home() {
         )}
 
         <section id="projects" className="scroll-mt-8">
-          <SectionTitle icon={<Ghost className="text-clyde" />}>Projects</SectionTitle>
+          <SectionTitle icon={<Ghost />}>Projects</SectionTitle>
           <ul className="grid gap-4 sm:grid-cols-2">
             {PROJECTS.map((project) => (
               <ProjectCard key={project.title} project={project} />
@@ -172,10 +161,10 @@ export default function Home() {
         </section>
 
         <section>
-          <SectionTitle icon={<Pac className="text-pac" />}>Hackathons</SectionTitle>
+          <SectionTitle icon={<Pac />}>Hackathons</SectionTitle>
           <ul className="grid gap-4 sm:grid-cols-2">
             {HACKATHONS.filter((hack) => hack.prize).map((hack) => (
-              <li key={hack.title} className="group overflow-hidden rounded-xl border border-line transition hover:-translate-y-0.5 hover:border-pac">
+              <li key={hack.title} className="group overflow-hidden rounded-xl border border-line transition hover:border-muted">
                 <a href={hack.href} className="block">
                   <div className="relative aspect-[16/9] overflow-hidden border-b border-line bg-[#161616]">
                     {hack.image && (
