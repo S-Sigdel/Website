@@ -2,22 +2,22 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  --bg: #fbfaf8;
-  --fg: #1d1c1a;
-  --muted: #6d6a65;
-  --line: #e6e3de;
-  --accent: #1f6a56;
-  --code-bg: #f1efeb;
+  --bg: #ffffff;
+  --fg: #111111;
+  --muted: #6b6b6b;
+  --line: #e8e8e8;
+  --accent: #111111;
+  --code-bg: #f4f4f4;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #121211;
-    --fg: #e9e7e3;
-    --muted: #9b9891;
-    --line: #2a2926;
-    --accent: #86c9ae;
-    --code-bg: #1c1b19;
+    --bg: #0b0b0b;
+    --fg: #ededed;
+    --muted: #8f8f8f;
+    --line: #232323;
+    --accent: #ededed;
+    --code-bg: #171717;
   }
 }
 
@@ -43,11 +43,32 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent) 25%, transparent);
+  background: var(--fg);
+  color: var(--bg);
 }
 
 a {
   text-underline-offset: 3px;
+}
+
+/* Plain links: underlined in the line color, darkening on hover */
+.link {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 150ms;
+}
+
+.link:hover {
+  text-decoration-color: currentColor;
+}
+
+/* Pac-Man pellets leading down to the game */
+.pellets {
+  background-image: radial-gradient(circle, var(--muted) 2px, transparent 2.5px);
+  background-size: 8px 28px;
+  background-repeat: repeat-y;
+  background-position: center top;
 }
 
 :focus-visible {
@@ -61,7 +82,7 @@ a {
   --tw-prose-body: var(--fg);
   --tw-prose-headings: var(--fg);
   --tw-prose-lead: var(--muted);
-  --tw-prose-links: var(--accent);
+  --tw-prose-links: var(--fg);
   --tw-prose-bold: var(--fg);
   --tw-prose-counters: var(--muted);
   --tw-prose-bullets: var(--muted);
@@ -88,9 +109,9 @@ a {
   content: none;
 }
 
-/* Code blocks stay dark in both themes (atom-one-dark) */
+/* Code blocks stay dark in both themes (atom-one-dark colors) */
 .post pre {
-  background: #282c34;
+  background: #161616;
   border-radius: 8px;
   font-size: 0.8125rem;
   line-height: 1.6;

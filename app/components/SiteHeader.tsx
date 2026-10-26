@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function SiteHeader() {
   return (
     <header className="flex items-center justify-between py-6 text-sm">
-      <Link href="/" className="font-medium text-fg hover:text-accent transition-colors">
+      <Link href="/" className="font-medium text-fg hover:text-muted transition-colors">
         Sakshyam Sigdel
       </Link>
       <nav className="flex gap-5 text-muted">

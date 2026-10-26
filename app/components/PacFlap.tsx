@@ -143,10 +143,10 @@ export default function PacFlap() {
     const css = getComputedStyle(containerRef.current ?? document.documentElement);
     const color = (name: string, fallback: string) => css.getPropertyValue(name).trim() || fallback;
     const palette = {
-      bg: color('--bg', scheme === 'dark' ? '#121211' : '#fbfaf8'),
-      fg: color('--fg', scheme === 'dark' ? '#e9e7e3' : '#1d1c1a'),
-      muted: color('--muted', '#6d6a65'),
-      line: color('--line', scheme === 'dark' ? '#2a2926' : '#e6e3de'),
+      bg: color('--bg', scheme === 'dark' ? '#0b0b0b' : '#ffffff'),
+      fg: color('--fg', scheme === 'dark' ? '#ededed' : '#111111'),
+      muted: color('--muted', '#6b6b6b'),
+      line: color('--line', scheme === 'dark' ? '#232323' : '#e8e8e8'),
     };
 
     const player = playerRef.current;

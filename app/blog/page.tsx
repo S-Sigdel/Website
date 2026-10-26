@@ -27,7 +27,7 @@ export default function BlogIndex() {
                   <time className="font-mono text-sm text-muted">
                     {new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
                   </time>
-                  <h2 className="mt-1 text-lg font-medium group-hover:text-accent transition-colors">{title}</h2>
+                  <h2 className="mt-1 text-lg font-medium underline decoration-transparent underline-offset-[3px] group-hover:decoration-current transition-colors">{title}</h2>
                   {excerpt && <p className="mt-1 leading-relaxed text-muted">{excerpt}</p>}
                 </Link>
               </li>

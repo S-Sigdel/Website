@@ -39,7 +39,7 @@ export default function Home() {
           </p>
           <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
             {LINKS.map((link) => (
-              <a key={link.label} href={link.href} className="text-accent underline decoration-transparent hover:decoration-current transition-colors">
+              <a key={link.label} href={link.href} className="link">
                 {link.label}
               </a>
             ))}
@@ -56,11 +56,11 @@ export default function Home() {
             </li>
             <li>
               Got my first patch into{' '}
-              <a href="https://gitlab.com/procps-ng/procps" className="text-accent underline decoration-transparent hover:decoration-current">procps-ng</a>,
+              <a href="https://gitlab.com/procps-ng/procps" className="link">procps-ng</a>,
               the package behind <code className="font-mono text-[0.9em]">ps</code>,{' '}
               <code className="font-mono text-[0.9em]">top</code> and{' '}
               <code className="font-mono text-[0.9em]">vmstat</code>.{' '}
-              <Link href="/blog/vmstat-one-word-fix" className="whitespace-nowrap text-accent underline decoration-transparent hover:decoration-current">
+              <Link href="/blog/vmstat-one-word-fix" className="link whitespace-nowrap">
                 Write-up
               </Link>
             </li>
@@ -74,7 +74,7 @@ export default function Home() {
               {posts.map((post) => (
                 <li key={post.slug} className="flex flex-col gap-0.5 sm:flex-row sm:gap-6">
                   <time className="shrink-0 font-mono text-sm text-muted sm:w-28 sm:pt-px">{formatDate(post.date)}</time>
-                  <Link href={`/blog/${post.slug}`} className="hover:text-accent transition-colors">
+                  <Link href={`/blog/${post.slug}`} className="link">
                     {post.title}
                   </Link>
                 </li>
@@ -89,7 +89,7 @@ export default function Home() {
             {PROJECTS.map((project) => (
               <li key={project.title}>
                 <a href={project.href} className="group">
-                  <h3 className="font-medium group-hover:text-accent transition-colors">
+                  <h3 className="font-medium underline decoration-transparent underline-offset-[3px] group-hover:decoration-current transition-colors">
                     {project.title}
                   </h3>
                 </a>
@@ -108,9 +108,9 @@ export default function Home() {
           <ul className="space-y-2">
             {HACKATHONS.map((hack) => (
               <li key={hack.title} className="flex items-baseline justify-between gap-4">
-                <a href={hack.href} className="hover:text-accent transition-colors">
+                <a href={hack.href} className="link">
                   {hack.title}
-                  {hack.won && <span className="ml-2 text-xs text-accent">Winner</span>}
+                  {hack.won && <span className="ml-2 text-xs text-muted">· won</span>}
                 </a>
                 <span className="text-sm text-muted">{hack.where}</span>
               </li>
@@ -125,8 +125,8 @@ export default function Home() {
       <SiteFooter />
 
       <section aria-label="Mini game" className="pb-16">
-        <div className="flex min-h-[75svh] items-center justify-center">
-          <p className="text-xs italic text-muted">this space intentionally left blank</p>
+        <div className="pellets flex min-h-[75svh] items-center justify-center">
+          <p className="bg-bg px-3 py-1 text-xs italic text-muted">this space intentionally left blank</p>
         </div>
         <PacFlap />
       </section>
