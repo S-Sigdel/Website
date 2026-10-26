@@ -9,7 +9,7 @@ export interface Project {
   title: string;
   desc: string;
   stack: string;
-  href: string;
+  href?: string;
   note?: string;
   writeup?: string;
   // Either a screenshot or a few lines of the real thing
@@ -19,23 +19,9 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
-    title: "procps-ng",
-    desc: "Fixed vmstat reporting context switches roughly 800x too low on its first line, a bug that shipped in every release since 2023. One-word patch, merged upstream.",
-    stack: "C · Linux",
-    href: "https://gitlab.com/procps-ng/procps/-/merge_requests/310",
-    note: "Open source · Merged",
-    writeup: "/blog/vmstat-one-word-fix",
-    snippet: [
-      "  V(10) = SYSv(stat_INT) / uptime;",
-      "- V(11) = SYSv(stat_CTX) / Div;",
-      "+ V(11) = SYSv(stat_CTX) / uptime;",
-    ],
-  },
-  {
     title: "Wildfire CNN→VLM cascade",
     desc: "Two-tier smoke detection for Jetson-class edge hardware. A ~1 ms YOLO gate clears most frames and escalates only uncertain ones to a fine-tuned Gemma vision-language model that returns structured JSON.",
     stack: "Python · YOLO · Gemma · Jetson",
-    href: "https://github.com/S-Sigdel/wildfire-cnn-vlm-cascade",
     note: "Paper",
     snippet: [
       "frame → YOLO smoke gate (~1 ms)",
@@ -80,6 +66,24 @@ export const PROJECTS: Project[] = [
     stack: "Python · OpenCV · Arduino",
     href: "https://github.com/S-Sigdel/handTrackingForBionicArm",
     image: "/handTracking.png",
+  },
+];
+
+export interface Contribution {
+  project: string;
+  desc: string;
+  date: string;
+  href: string;
+  writeup?: string;
+}
+
+export const OPEN_SOURCE: Contribution[] = [
+  {
+    project: "procps-ng",
+    desc: "Fixed vmstat reporting context switches roughly 800x too low on its first line, a bug in every release since 2023.",
+    date: "Oct 2026",
+    href: "https://gitlab.com/procps-ng/procps/-/merge_requests/310",
+    writeup: "/blog/vmstat-one-word-fix",
   },
 ];
 

@@ -5,7 +5,7 @@ import SiteFooter from './components/SiteFooter';
 import PacFlap from './components/PacFlap';
 import { Ghost, Pac } from './components/Sprites';
 import { getSortedPostsData } from '../lib/blog';
-import { LINKS, EXPERIENCE, PROJECTS, HACKATHONS, DEVPOST, type Project } from './data/site';
+import { LINKS, OPEN_SOURCE, EXPERIENCE, PROJECTS, HACKATHONS, DEVPOST, type Project } from './data/site';
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
@@ -40,7 +40,7 @@ function Snippet({ lines }: { lines: string[] }) {
 function ProjectCard({ project }: { project: Project }) {
   return (
     <li className="group flex flex-col overflow-hidden rounded-xl border border-line transition hover:border-muted">
-      <a href={project.href} className="relative block aspect-[16/9] overflow-hidden border-b border-line bg-[#161616]">
+      <a href={project.href} className={`relative block aspect-[16/9] overflow-hidden border-b border-line bg-[#161616] ${project.href ? '' : 'pointer-events-none'}`}>
         {project.image ? (
           <Image
             src={project.image}
@@ -54,7 +54,7 @@ function ProjectCard({ project }: { project: Project }) {
         )}
       </a>
       <div className="flex flex-1 flex-col p-4">
-        <a href={project.href}>
+        <a href={project.href} className={project.href ? '' : 'pointer-events-none'}>
           <h3 className="font-medium underline decoration-transparent underline-offset-[3px] transition-colors group-hover:decoration-current">{project.title}</h3>
         </a>
         <p className="mt-1 flex-1 text-sm leading-relaxed text-muted">{project.desc}</p>
@@ -150,6 +150,29 @@ export default function Home() {
             </ul>
           </section>
         )}
+
+        <section>
+          <SectionTitle icon={<Ghost />}>Open source</SectionTitle>
+          <ul className="space-y-4">
+            {OPEN_SOURCE.map((item) => (
+              <li key={item.href}>
+                <div className="flex items-baseline justify-between gap-4">
+                  <a href={item.href} className="link font-medium">{item.project}</a>
+                  <span className="shrink-0 font-mono text-xs text-muted">{item.date}</span>
+                </div>
+                <p className="mt-1 leading-relaxed text-muted">
+                  {item.desc}
+                  {item.writeup && (
+                    <>
+                      {' '}
+                      <Link href={item.writeup} className="link text-fg">Write-up</Link>
+                    </>
+                  )}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         <section id="projects" className="scroll-mt-8">
           <SectionTitle icon={<Ghost />}>Projects</SectionTitle>
