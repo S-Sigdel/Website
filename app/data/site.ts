@@ -11,9 +11,18 @@ export interface Project {
   stack: string;
   href: string;
   note?: string;
+  writeup?: string;
 }
 
 export const PROJECTS: Project[] = [
+  {
+    title: "procps-ng",
+    desc: "Fixed vmstat reporting context switches roughly 800x too low on its first line, a bug that shipped in every release since 2023. One-word patch, merged upstream.",
+    stack: "C · Linux",
+    href: "https://gitlab.com/procps-ng/procps/-/merge_requests/310",
+    note: "Open source · Merged",
+    writeup: "/blog/vmstat-one-word-fix",
+  },
   {
     title: "Wildfire CNN→VLM cascade",
     desc: "Two-tier smoke detection for Jetson-class edge hardware. A ~1 ms YOLO gate clears most frames and escalates only uncertain ones to a fine-tuned Gemma vision-language model that returns structured JSON.",
@@ -35,12 +44,6 @@ export const PROJECTS: Project[] = [
     href: "https://github.com/S-Sigdel/hyprdrover",
   },
   {
-    title: "Memory allocator",
-    desc: "A dynamic memory allocator written from scratch in C, following the GNU malloc interface.",
-    stack: "C",
-    href: "https://github.com/S-Sigdel/Memory-Allocator-in-C",
-  },
-  {
     title: "Curtain",
     desc: "Load-balanced web service with a PostgreSQL fallback and Redis-sharded ingestion with async stream consumers.",
     stack: "Python · Redis · PostgreSQL · Docker",
@@ -58,12 +61,6 @@ export const PROJECTS: Project[] = [
     desc: "OpenCV hand tracking that drives the servos of a 3D-printed prosthetic arm in real time.",
     stack: "Python · OpenCV · Arduino",
     href: "https://github.com/S-Sigdel/handTrackingForBionicArm",
-  },
-  {
-    title: "Switchback",
-    desc: "Offline spaced-repetition trainer for the NeetCode 150. Standard-library Python, no accounts.",
-    stack: "Python",
-    href: "https://github.com/S-Sigdel/switchback",
   },
 ];
 
@@ -83,10 +80,9 @@ export const EXPERIENCE: Experience[] = [
     period: "Summer 2026",
     where: "Remote",
     bullets: [
-      "Selected for the 12-week Production Engineering track MLH runs with Meta, working in a small pod mentored by Meta production engineers.",
-      "Took a Flask service from localhost to production: Linux server setup, Bash automation, a SQL database, Docker containers behind Nginx, and GitHub Actions CI/CD gated on automated tests.",
-      "Instrumented services with Prometheus and Grafana, then used them to load-test, find bottlenecks, and troubleshoot networking and service failures.",
-      "Shipped every change through issues, branches, and reviewed pull requests, and finished with Meta-style production engineering interviews.",
+      "Worked in a pod of 13 fellows mentored by Meta production engineers, talking through how production systems fail and debugging production-style incidents together.",
+      "Had weekly one-on-ones with mentors, and presented the /proc chapter in the pod's Linux study sessions.",
+      "Practiced the production engineering stack end to end: Linux, Bash, databases, Docker, Nginx, CI/CD, monitoring and networking.",
     ],
   },
   {

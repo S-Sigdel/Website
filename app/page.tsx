@@ -58,16 +58,15 @@ export default function Home() {
 
         <section>
           <SectionTitle icon={<Ghost className="text-pinky" />}>Now</SectionTitle>
-          <p className="leading-relaxed">
-            Got my first patch into{' '}
-            <a href="https://gitlab.com/procps-ng/procps" className="link">procps-ng</a>,
-            the package behind <code className="font-mono text-[0.9em]">ps</code>,{' '}
-            <code className="font-mono text-[0.9em]">top</code> and{' '}
-            <code className="font-mono text-[0.9em]">vmstat</code>. One word, almost four years old.{' '}
-            <Link href="/blog/vmstat-one-word-fix" className="link whitespace-nowrap">
-              Read the write-up
-            </Link>
-          </p>
+          <ul className="space-y-2 leading-relaxed">
+            <li>
+              Picking{' '}
+              <a href="https://github.com/S-Sigdel/hyprdrover" className="link">hyprdrover</a>{' '}
+              back up: saving and restoring Hyprland sessions, in Rust.
+            </li>
+            <li>Researching agentic AI for autonomous UAVs at USM.</li>
+            <li>Looking for the next bug worth fixing upstream.</li>
+          </ul>
         </section>
 
         <section>
@@ -126,6 +125,12 @@ export default function Home() {
                 <p className="mt-1.5 font-mono text-xs text-muted">
                   {project.stack}
                   {project.note && <span className="text-clyde"> · {project.note}</span>}
+                  {project.writeup && (
+                    <>
+                      {' · '}
+                      <Link href={project.writeup} className="link">write-up</Link>
+                    </>
+                  )}
                 </p>
               </li>
             ))}
