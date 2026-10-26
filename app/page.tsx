@@ -121,19 +121,6 @@ export default function Home() {
         </ul>
 
         <section>
-          <SectionTitle icon={<Ghost className="text-pinky" />}>Now</SectionTitle>
-          <ul className="space-y-2 leading-relaxed">
-            <li>
-              Picking{' '}
-              <a href="https://github.com/S-Sigdel/hyprdrover" className="link">hyprdrover</a>{' '}
-              back up: saving and restoring Hyprland sessions, in Rust.
-            </li>
-            <li>Researching agentic AI for autonomous UAVs at USM.</li>
-            <li>Looking for the next bug worth fixing upstream.</li>
-          </ul>
-        </section>
-
-        <section>
           <SectionTitle icon={<Ghost className="text-blinky" />}>Experience</SectionTitle>
           <ul className="space-y-10">
             {EXPERIENCE.map((job) => (
