@@ -172,3 +172,27 @@ export const HACKATHONS: Hackathon[] = [
 ];
 
 export const DEVPOST = "https://devpost.com/S-Sigdel";
+
+// /stuff: the non-work side. Add a line, push, done.
+export interface Read {
+  title: string;
+  author: string;
+  kind: "book" | "article";
+  href?: string;
+}
+
+export const READING: Read[] = [
+  {
+    title: 'Modern "Freedom" Means Being a Slave to Impulses',
+    author: "Luke Smith",
+    kind: "article",
+    href: "https://lukesmith.xyz/articles/modern-freedom-means-being-a-slave-to-impulses/",
+  },
+];
+
+export interface Watch {
+  title: string;
+  kind: "movie" | "anime" | "series";
+}
+
+export const WATCHING: Watch[] = [];

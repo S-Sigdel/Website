@@ -2,7 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
-import PacFlap from './components/PacFlap';
 import { Ghost, Pac } from './components/Sprites';
 import { getSortedPostsData } from '../lib/blog';
 import { LINKS, OPEN_SOURCE, EXPERIENCE, PROJECTS, HACKATHONS, DEVPOST, type Project } from './data/site';
@@ -228,12 +227,6 @@ export default function Home() {
 
       <SiteFooter />
 
-      <section aria-label="Mini game" className="pb-16">
-        <div className="pellets flex min-h-[75svh] items-center justify-center">
-          <p className="bg-bg px-3 py-1 text-xs italic text-muted">this space intentionally left blank</p>
-        </div>
-        <PacFlap />
-      </section>
     </>
   );
 }

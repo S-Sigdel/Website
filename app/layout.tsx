@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import PacFlap from "./components/PacFlap";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -42,6 +43,14 @@ export default function RootLayout({
       <body className="antialiased">
         <div className="mx-auto max-w-[46rem] px-5 sm:px-6">
           {children}
+
+          {/* Every page ends the same way */}
+          <section aria-label="Mini game" className="pb-16">
+            <div className="pellets flex min-h-[75svh] items-center justify-center">
+              <p className="bg-bg px-3 py-1 text-xs italic text-muted">this space intentionally left blank</p>
+            </div>
+            <PacFlap />
+          </section>
         </div>
       </body>
     </html>

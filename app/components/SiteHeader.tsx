@@ -9,6 +9,7 @@ export default function SiteHeader() {
       <nav className="flex gap-5 text-muted">
         <Link href="/blog" className="hover:text-fg transition-colors">Writing</Link>
         <Link href="/#projects" className="hover:text-fg transition-colors">Projects</Link>
+        <Link href="/stuff" className="hover:text-fg transition-colors">Stuff</Link>
         <a href="/Resume.pdf" className="hover:text-fg transition-colors">Résumé</a>
       </nav>
     </header>
