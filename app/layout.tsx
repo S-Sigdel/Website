@@ -1,9 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { StatusProvider } from "./context/StatusContext";
-import { SearchProvider } from "./context/SearchContext";
-import SearchOverlay from "./components/SearchOverlay";
-import Background from "./components/Background";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,11 +13,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "~/portfolio",
-  description: "Low-level enthusiast portfolio",
+  metadataBase: new URL("https://www.sakshyamsigdel.com.np"),
+  title: {
+    default: "Sakshyam Sigdel",
+    template: "%s · Sakshyam Sigdel",
+  },
+  description:
+    "Student at the University of Southern Mississippi working on Linux, systems software, and embedded hardware.",
   icons: {
     icon: '/favicon.svg',
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fbfaf8" },
+    { media: "(prefers-color-scheme: dark)", color: "#121211" },
+  ],
 };
 
 export default function RootLayout({
@@ -30,19 +38,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-base text-text`}
-      >
-        <StatusProvider>
-          <SearchProvider>
-            <Background />
-            <div className="relative z-10">
-              {children}
-            </div>
-            <SearchOverlay />
-          </SearchProvider>
-        </StatusProvider>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="antialiased">
+        <div className="mx-auto max-w-[42rem] px-5 sm:px-6">
+          {children}
+        </div>
       </body>
     </html>
   );

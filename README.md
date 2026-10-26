@@ -101,7 +101,9 @@ from datetime import datetime, timedelta
 # Configuration
 # Default to the production URL as seen in your logs, but allow override
 API_URL = os.getenv('API_URL', 'https://www.sakshyamsigdel.com.np/api/system-status')
-API_SECRET = os.getenv('API_SECRET', 'default-secret-key').strip()
+API_SECRET = os.getenv('API_SECRET', '').strip()
+if not API_SECRET:
+    sys.exit("API_SECRET is not set; export the same value configured on Vercel.")
 INTERVAL = 5  # Seconds
 VERSION = "1.1.2"
 

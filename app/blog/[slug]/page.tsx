@@ -1,5 +1,6 @@
 import { getPostData, getSortedPostsData } from '../../../lib/blog';
-import NavBar from '../../components/NavBar';
+import SiteHeader from '../../components/SiteHeader';
+import SiteFooter from '../../components/SiteFooter';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/atom-one-dark.css';
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const postData = getPostData(slug);
   return {
-    title: `${postData.title} | S-Sigdel`,
+    title: postData.title,
     description: postData.excerpt,
   };
 }
@@ -27,45 +28,37 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   const postData = getPostData(slug);
 
   return (
-    <div className="min-h-screen bg-base text-text font-mono selection:bg-surface2 selection:text-text">
-      <NavBar />
-      <div className="max-w-3xl mx-auto px-4 py-12 md:py-20">
-        <Link href="/blog" className="inline-flex items-center text-subtext0 hover:text-blue mb-8 transition-colors">
-          ← cd ..
-        </Link>
-        
+    <>
+      <SiteHeader />
+      <main className="pt-8">
         <article>
-          <header className="mb-8 border-b border-surface0 pb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-blue mb-4">
+          <header className="mb-10">
+            <time className="font-mono text-sm text-muted">
+              {new Date(postData.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                timeZone: 'UTC'
+              })}
+            </time>
+            <h1 className="mt-2 text-3xl font-semibold leading-tight tracking-tight">
               {postData.title}
             </h1>
-            <div className="flex flex-wrap items-center gap-4 text-sm text-subtext0">
-              <time>
-                {new Date(postData.date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </time>
-              {postData.tags && postData.tags.map(tag => (
-                <span key={tag} className="text-blue">#{tag}</span>
-              ))}
-            </div>
           </header>
 
-          <div className="prose prose-invert prose-blue max-w-none prose-pre:bg-mantle prose-pre:border prose-pre:border-surface0">
-            <ReactMarkdown 
+          <div className="post prose max-w-none leading-relaxed">
+            <ReactMarkdown
               rehypePlugins={[rehypeHighlight]}
               components={{
-                img: ({node, ...props}) => (
+                img: ({ src, alt }) => (
                   <span className="block my-8 relative w-full h-auto">
                     <Image
-                      src={(props.src as string) || ''}
-                      alt={props.alt || ''}
+                      src={(src as string) || ''}
+                      alt={alt || ''}
                       width={0}
                       height={0}
-                      sizes="100vw"
-                      className="rounded-lg border border-surface0 w-full h-auto"
+                      sizes="(max-width: 768px) 100vw, 672px"
+                      className="rounded-lg border border-line w-full h-auto"
                     />
                   </span>
                 )
@@ -75,7 +68,12 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </ReactMarkdown>
           </div>
         </article>
-      </div>
-    </div>
+
+        <Link href="/blog" className="mt-12 inline-block text-sm text-muted hover:text-fg transition-colors">
+          ← All writing
+        </Link>
+      </main>
+      <SiteFooter />
+    </>
   );
 }

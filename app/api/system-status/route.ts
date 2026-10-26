@@ -2,10 +2,11 @@ import { NextResponse } from 'next/server';
 
 // In-memory storage for the latest status (Note: This is ephemeral in serverless)
 // For production persistence, use Vercel KV or a database.
-let latestStatus: any = null;
+let latestStatus: Record<string, unknown> | null = null;
 let lastUpdate = 0;
 
-const API_SECRET = process.env.API_SECRET || 'default-secret-key';
+// No fallback: if API_SECRET isn't configured, every POST is rejected.
+const API_SECRET = process.env.API_SECRET;
 
 export async function GET() {
   try {
@@ -46,7 +47,7 @@ export async function POST(request: Request) {
   try {
     // Verify authentication
     const authHeader = request.headers.get('Authorization');
-    if (authHeader !== `Bearer ${API_SECRET}`) {
+    if (!API_SECRET || authHeader !== `Bearer ${API_SECRET}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
