@@ -54,6 +54,13 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Bigger type and column on desktop screens; everything is in rem, so it all scales together */
+@media (min-width: 1024px) {
+  html {
+    font-size: 112.5%;
+  }
+}
+
 body {
   background: var(--bg);
   color: var(--fg);

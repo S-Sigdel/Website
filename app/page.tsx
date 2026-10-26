@@ -111,21 +111,19 @@ export default function Home() {
 
         <section>
           <SectionTitle icon={<Ghost />}>Experience</SectionTitle>
-          <ul className="space-y-10">
+          <ul className="grid gap-4 sm:grid-cols-2">
             {EXPERIENCE.map((job) => (
-              <li key={job.role}>
-                <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                  <h3 className="font-medium">{job.role}</h3>
-                  <span className="shrink-0 font-mono text-xs text-muted">{job.period}</span>
-                </div>
+              <li key={job.role} className="rounded-xl border border-line p-4">
+                <h3 className="font-medium">{job.role}</h3>
                 <p className="mt-0.5 text-sm text-muted">
                   {job.org} · {job.where}
                   {job.note && <> · {job.note}</>}
                 </p>
-                <ul className="mt-3 space-y-2">
+                <p className="mt-1 font-mono text-xs text-muted">{job.period}</p>
+                <ul className="mt-3 space-y-2 text-sm">
                   {job.bullets.map((bullet) => (
-                    <li key={bullet} className="flex gap-3 leading-relaxed">
-                      <span aria-hidden className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-muted" />
+                    <li key={bullet} className="flex gap-2.5 leading-relaxed">
+                      <span aria-hidden className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-muted" />
                       <span>{bullet}</span>
                     </li>
                   ))}
