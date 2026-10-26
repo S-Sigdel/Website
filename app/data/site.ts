@@ -67,12 +67,59 @@ export const PROJECTS: Project[] = [
   },
 ];
 
-export const HACKATHONS = [
-  { title: "Acroswe", where: "Princeton", won: true, href: "https://devpost.com/software/acroswe" },
-  { title: "noBrainstorm", where: "Davidson College", won: true, href: "https://devpost.com/software/nobrainstorm" },
-  { title: "Richie Rich", where: "Princeton", href: "https://devpost.com/software/richie-rich" },
-  { title: "Ripple", where: "University of Miami", href: "https://devpost.com/software/ripple" },
-  { title: "NightSeeker", where: "Online", href: "https://devpost.com/software/nightseeker" },
+export interface Experience {
+  role: string;
+  org: string;
+  period: string;
+  where: string;
+  note?: string;
+  bullets: string[];
+}
+
+export const EXPERIENCE: Experience[] = [
+  {
+    role: "MLH Fellow, Production Engineering",
+    org: "Major League Hacking × Meta",
+    period: "Summer 2026",
+    where: "Remote",
+    bullets: [
+      "Selected for the 12-week Production Engineering track MLH runs with Meta, working in a small pod mentored by Meta production engineers.",
+      "Took a Flask service from localhost to production: Linux server setup, Bash automation, a SQL database, Docker containers behind Nginx, and GitHub Actions CI/CD gated on automated tests.",
+      "Instrumented services with Prometheus and Grafana, then used them to load-test, find bottlenecks, and troubleshoot networking and service failures.",
+      "Shipped every change through issues, branches, and reviewed pull requests, and finished with Meta-style production engineering interviews.",
+    ],
+  },
+  {
+    role: "Undergraduate Researcher, Agentic AI Systems",
+    org: "University of Southern Mississippi",
+    period: "Jan 2026 – Present",
+    where: "Hattiesburg, MS",
+    note: "PI: Dr. Rabab Abdelfattah",
+    bullets: [
+      "Building a Python orchestration layer that connects smoke and fire detection models to planning agents for autonomous UAV flight decisions.",
+      "Designed a replayable logging pipeline for agent decision traces, so multi-agent runs can be evaluated and debugged reproducibly.",
+    ],
+  },
+];
+
+export interface Hackathon {
+  title: string;
+  event: string;
+  prize?: string;
+  href: string;
+}
+
+export const HACKATHONS: Hackathon[] = [
+  { title: "Hermes", event: "Midnight Hackathon", prize: "AI Track", href: "https://devpost.com/software/hermes-7txsej" },
+  { title: "Acroswe", event: "HackPrinceton Spring 2025", prize: "Best Use of Blockchain + AI", href: "https://devpost.com/software/acroswe" },
+  { title: "noBrainstorm", event: "Hack@Davidson 2025", prize: "Second Overall", href: "https://devpost.com/software/nobrainstorm" },
+  { title: "Curtain", event: "MLH Production Engineering Hackathon", prize: "Scalability Track", href: "https://devpost.com/software/curtain" },
+  { title: "Zepic", event: "LA Hacks 2026", href: "https://devpost.com/software/zepic" },
+  { title: "SpecGuardian", event: "GitLab AI Hackathon", href: "https://devpost.com/software/viewtower" },
+  { title: "Tribe28", event: "Team USA × Google Cloud Hackathon", href: "https://devpost.com/software/propeller" },
+  { title: "Richie Rich", event: "HackPrinceton Fall 2025", href: "https://devpost.com/software/richie-rich" },
+  { title: "Ripple", event: "UMiami Horizon AI Hackathon 2025", href: "https://devpost.com/software/ripple-dkzc4j" },
+  { title: "NightSeeker", event: "Midnight Hackathon", href: "https://devpost.com/software/nightseeker" },
 ];
 
 export const DEVPOST = "https://devpost.com/S-Sigdel";

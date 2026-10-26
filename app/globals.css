@@ -8,6 +8,13 @@
   --line: #e8e8e8;
   --accent: #111111;
   --code-bg: #f4f4f4;
+
+  /* Pac-Man palette: one ghost per section, yellow for wins */
+  --blinky: #e5383b;
+  --pinky: #d63a96;
+  --inky: #0891b2;
+  --clyde: #ea580c;
+  --pac: #ffcc00;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,6 +25,12 @@
     --line: #232323;
     --accent: #ededed;
     --code-bg: #171717;
+
+    --blinky: #ff5a5f;
+    --pinky: #ff7ac6;
+    --inky: #22d3ee;
+    --clyde: #fb923c;
+    --pac: #ffd60a;
   }
 }
 
@@ -27,6 +40,11 @@
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-accent: var(--accent);
+  --color-blinky: var(--blinky);
+  --color-pinky: var(--pinky);
+  --color-inky: var(--inky);
+  --color-clyde: var(--clyde);
+  --color-pac: var(--pac);
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
@@ -51,16 +69,23 @@ a {
   text-underline-offset: 3px;
 }
 
-/* Plain links: underlined in the line color, darkening on hover */
+/* Links: tinted underline that fills in on hover */
 .link {
   text-decoration: underline;
-  text-decoration-color: var(--line);
-  text-decoration-thickness: 1px;
-  transition: text-decoration-color 150ms;
+  text-decoration-color: color-mix(in srgb, var(--inky) 45%, transparent);
+  text-decoration-thickness: 1.5px;
+  transition: text-decoration-color 150ms, color 150ms;
 }
 
 .link:hover {
+  color: var(--inky);
   text-decoration-color: currentColor;
+}
+
+/* Highlighter swipe behind the name */
+.marker {
+  background: linear-gradient(transparent 58%, color-mix(in srgb, var(--pac) 55%, transparent) 58%);
+  padding: 0 0.1em;
 }
 
 /* Pac-Man pellets leading down to the game */
@@ -82,7 +107,7 @@ a {
   --tw-prose-body: var(--fg);
   --tw-prose-headings: var(--fg);
   --tw-prose-lead: var(--muted);
-  --tw-prose-links: var(--fg);
+  --tw-prose-links: var(--inky);
   --tw-prose-bold: var(--fg);
   --tw-prose-counters: var(--muted);
   --tw-prose-bullets: var(--muted);
